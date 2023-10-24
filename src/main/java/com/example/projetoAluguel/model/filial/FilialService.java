@@ -52,4 +52,5 @@ public class FilialService { //É a classe responsável por interagir com o banc
         repository.deleteById(filialId);
         return "DELETED REGISTER";
     }
+
 }

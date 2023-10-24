@@ -38,4 +38,6 @@ public class FilialController {
     public String deletar(@PathVariable("filialId") UUID filialId){
         return filialService.delete(filialId);
     }
+
+
 }

@@ -11,7 +11,7 @@ public class ClienteViewController {
     @ResponseBody
     public ModelAndView home(){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("registerPage/home.html");
+        modelAndView.setViewName("/homePage/home.html");
         return modelAndView;
     }
 }

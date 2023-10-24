@@ -16,6 +16,7 @@ public class ClienteController {
     @PostMapping
     @ResponseBody
     public ClienteDTO criar(@RequestBody ClienteDTO clienteDTO){
+
         return clienteService.criar(clienteDTO);
     }
 
@@ -29,12 +30,14 @@ public class ClienteController {
     @GetMapping
     @ResponseBody
     public List<ClienteDTO> getALL(){
+
         return clienteService.getALL();
     }
 
     @DeleteMapping("/{clienteId}")
     @ResponseBody
     public String deletar(@PathVariable("clienteId") UUID clienteId){
+
         return clienteService.delete(clienteId);
     }
 }
