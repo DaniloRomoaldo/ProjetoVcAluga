@@ -7,4 +7,5 @@ import java.util.UUID;
 
 @Repository
 public interface MotoristaRepository extends JpaRepository<Motorista, UUID> {
+    Motorista findByCnh(String cnhMotorista);
 }

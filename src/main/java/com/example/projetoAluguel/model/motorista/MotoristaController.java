@@ -1,5 +1,6 @@
 package com.example.projetoAluguel.model.motorista;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -16,16 +17,16 @@ public class MotoristaController {
 
     @PostMapping
     @ResponseBody
-    public MotoristaDTO criar(@RequestBody MotoristaDTO motoristaDTO){ //preciso aprender como coletar a data no formato correto para a requisição http
+    public MotoristaDTO criar(@RequestBody MotoristaDTO motoristaDTO) throws JsonProcessingException { //preciso aprender como coletar a data no formato correto para a requisição http
 
         return motoristaService.criar(motoristaDTO);
     }
 
-    @PutMapping({"/{motoristaId}"})
+    @PutMapping({"/{cnh}"})
     @ResponseBody
-    public MotoristaDTO atualizar(@PathVariable("motoristaId") UUID motoristaId,
+    public MotoristaDTO atualizar(@PathVariable("cnh") String cnh,
                                   @RequestBody MotoristaDTO motoristaDTO){
-        return motoristaService.atualizar(motoristaDTO, motoristaId);
+        return motoristaService.atualizar(motoristaDTO, cnh);
     }
 
     @GetMapping

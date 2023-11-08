@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<!-- aqui é comentario -->
+<body>
+
+
+<main>
+    <h1>Login</h1>
+    <!--     <div th:if="${param.error}">Erro ao realizar login</div> -->
+
+        <div>
+            <form action="#" th:action="@{/login}" th:object="${login}" method="post">
+                <p>Codigo: <input type="number" th:field="*{cod}" /></p>
+                <p th:if="${param.error}">Erro ao realizar login</p>
+                <p>nome: <input type="text" th:field="*{nome}" /></p>
+                <p><input type="submit" value="Submit" /> </p>
+            </form>
+
+
+        </div>
+
+
+    </main>
+
+    </body>
+    </html>

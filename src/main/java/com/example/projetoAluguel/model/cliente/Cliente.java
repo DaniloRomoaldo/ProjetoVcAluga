@@ -17,8 +17,8 @@ public class Cliente {
     @Column(name = "nome", nullable = false)
     private String nome;
 
-    @Column(name = "cpf_cnpj", nullable = false, unique = true)
-    private String cpf_cnpj;
+    @Column(name = "cpfCnpj", nullable = false, unique = true)
+    private String cpfCnpj;
 
     @Column(name = "tipo", nullable = false)
     private String tipo;
@@ -48,12 +48,12 @@ public class Cliente {
         this.nome = nome;
     }
 
-    public String getCpf_cnpj() {
-        return cpf_cnpj;
+    public String getCpfCnpj() {
+        return cpfCnpj;
     }
 
-    public void setCpf_cnpj(String cpf_cnpj) {
-        this.cpf_cnpj = cpf_cnpj;
+    public void setCpfCnpj(String cpfCnpj) {
+        this.cpfCnpj = cpfCnpj;
     }
 
     public String getTipo() {

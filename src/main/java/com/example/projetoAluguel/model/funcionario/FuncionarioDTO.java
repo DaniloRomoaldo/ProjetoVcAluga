@@ -30,7 +30,7 @@ public class FuncionarioDTO { //DTO -> Data Transfer Object, é o meu objeto da 
     }
 
     public String getNome() {
-        return nome;
+        return this.nome;
     }
 
     public void setNome(String nome) {
@@ -54,7 +54,7 @@ public class FuncionarioDTO { //DTO -> Data Transfer Object, é o meu objeto da 
     }
 
     public int getCod_funcionario() {
-        return cod_funcionario;
+        return this.cod_funcionario;
     }
 
     public void setCod_funcionario(int cod_funcionario) {

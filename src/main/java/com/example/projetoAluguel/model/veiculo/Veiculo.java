@@ -27,6 +27,12 @@ public class Veiculo {
     @Column(name = "km_total", nullable = false)
     private int km_total;
 
+    @Column(name = "placa", nullable = false, unique = true, updatable = true)
+    private String placa;
+
+    @Column(name = "nome", nullable = false)
+    private String nome;
+
 
     public UUID getId() {
         return id;
@@ -67,5 +73,21 @@ public class Veiculo {
 
     public void setKm_total(int km_total) {
         this.km_total = km_total;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }

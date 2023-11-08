@@ -31,6 +31,12 @@ public class Manutencao {
     @Column(name = "dt_previsao", nullable = true)
     private LocalDate dt_previsao;
 
+    @Column(name = "placa", nullable = false, unique = true)
+    private String placa;
+
+    @Column(name = "status", nullable = false, updatable = true)
+    private String status;
+
 
     public UUID getId() {
         return id;
@@ -70,5 +76,21 @@ public class Manutencao {
 
     public void setDt_previsao(LocalDate dt_previsao) {
         this.dt_previsao = dt_previsao;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

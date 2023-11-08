@@ -5,7 +5,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/manutencao", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -17,14 +16,14 @@ public class ManutencaoController {
     @PostMapping
     @ResponseBody
     public ManutencaoDTO criar(@RequestBody ManutencaoDTO manutencaoDTO){
-        return manutencaoService.criar(manutencaoDTO);
+        return manutencaoService.criar(manutencaoDTO); // para criar um json manutencao eu preciso da placa do veículo dentro do VeiculoDTO
     }
 
-    @PutMapping("/{manutencaoId}")
+    @PutMapping("/{placaVeiculo}")
     @ResponseBody
-    public ManutencaoDTO atualizar(@PathVariable("manutencaoId")UUID manutencaoId,
-                                   @RequestBody ManutencaoDTO manutencaoDTO){
-        return manutencaoService.atualizar(manutencaoDTO, manutencaoId);
+    public ManutencaoDTO atualizar(@PathVariable("placaVeiculo")String placaVeiculo,
+                                    @RequestBody ManutencaoDTO manutencaoDTO){
+        return manutencaoService.atualizar(manutencaoDTO, placaVeiculo); // para criar o json eu preciso da placa do veículo dentro do VeiculoDTO
     }
 
     @GetMapping
@@ -33,10 +32,10 @@ public class ManutencaoController {
         return manutencaoService.getALL();
     }
 
-    @DeleteMapping("/{manutencaoId}")
+    @DeleteMapping("/{placaVeiculo}")
     @ResponseBody
-    public String deletar(@PathVariable("manutencaoId") UUID manutencaoId){
-        return manutencaoService.delete(manutencaoId);
+    public String deletar(@PathVariable("placaVeiculo") String placaVeiculo){
+        return manutencaoService.delete(placaVeiculo);
     }
 
 //   public ManutencaoController(ManutencaoService manutencaoService) {

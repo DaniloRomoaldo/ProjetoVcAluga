@@ -6,7 +6,16 @@ import java.util.UUID;
 public class ClienteDTO {
     private UUID id;
     private String nome;
-    private String cpf_cnpj;
+
+//    public String getCpfCnpj() {
+//        return cpfCnpj;
+//    }
+//
+//    public void setCpfCnpj(String cpfCnpj) {
+//        this.cpfCnpj = cpfCnpj;
+//    }
+
+    private String cpfCnpj;
     private String tipo;
     private String telefone;
     private OffsetDateTime dt_cadastro = OffsetDateTime.now();
@@ -28,12 +37,12 @@ public class ClienteDTO {
         this.nome = nome;
     }
 
-    public String getCpf_cnpj() {
-        return cpf_cnpj;
+    public String getCpfCnpj() {
+        return cpfCnpj;
     }
 
-    public void setCpf_cnpj(String cpf_cnpj) {
-        this.cpf_cnpj = cpf_cnpj;
+    public void setCpfCnpj(String cpf_cnpj) {
+        this.cpfCnpj = cpf_cnpj;
     }
 
     public String getTipo() {
@@ -57,7 +66,7 @@ public class ClienteDTO {
     }
 
     public void setDt_cadastro(OffsetDateTime dt_cadastro) {
-        this.dt_cadastro = dt_cadastro.minusHours(3);
+        this.dt_cadastro = dt_cadastro.minusHours(0);
 
     }
 

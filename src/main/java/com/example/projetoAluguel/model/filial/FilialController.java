@@ -1,5 +1,6 @@
 package com.example.projetoAluguel.model.filial;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -16,15 +17,15 @@ public class FilialController {
 
     @PostMapping // configuração dos métodos HTTP: Método Post
     @ResponseBody // Indica que o retorno do método (criar) deve ser um corpo de solicitação HTTP (json no caso)
-    public FilialDTO criar(@RequestBody FilialDTO filialDTO){ //@RequestBody indica que o spring boot deve converter o json recebido em um objeto filialDTO
+    public FilialDTO criar(@RequestBody FilialDTO filialDTO) throws JsonProcessingException { //@RequestBody indica que o spring boot deve converter o json recebido em um objeto filialDTO
         return  filialService.criar(filialDTO);
     }
 
-    @PutMapping("/{filialId}")
+    @PutMapping("/{nomeFilial}")
     @ResponseBody
-    public FilialDTO atualizar(@PathVariable("filialId") UUID filialId,
+    public FilialDTO atualizar(@PathVariable("nomeFilial") String nomeFilial,
                                @RequestBody FilialDTO filialDTO){
-        return filialService.atualizar(filialDTO, filialId);
+        return filialService.atualizar(filialDTO, nomeFilial);
     }
 
     @GetMapping

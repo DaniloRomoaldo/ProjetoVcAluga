@@ -1,12 +1,12 @@
 
-<html lang="pt-br">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link rel="stylesheet" href="/registerPage/style.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 <main>
@@ -17,9 +17,9 @@
             <input type="text" id="nome" name="nome" placeholder="*Nome Completo">
         </label>
 
-        <label for="cpf_cnpj">
+        <label for="cpfCnpj">
             <span>CPF ou CNPJ</span>
-            <input type="text" id="cpf_cnpj" name="cpf_cnpj" placeholder="*somente números">
+            <input type="text" id="cpfCnpj" name="cpfCnpj" placeholder="*somente números">
         </label>
 
         <label for="telefone">
@@ -28,9 +28,9 @@
         </label>
 
         <input type="submit" value="Registrar">
-        <a href="http://localhost:8080/homePage/home.html">Cancelar</a>
+        <a th:href="home">Cancelar</a>
     </form>
-    <script src="/registerPage/register.js"></script>
+    <script src="/js/register.js"></script>
 </main>
 </body>
 </html>

@@ -21,6 +21,10 @@ public class ManutencaoDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dt_previsao;
 
+    private String placa;
+
+    private String status;
+
 
     public UUID getId() {
         return id;
@@ -60,5 +64,21 @@ public class ManutencaoDTO {
 
     public void setDt_previsao(LocalDate dt_previsao) {
         this.dt_previsao = dt_previsao;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

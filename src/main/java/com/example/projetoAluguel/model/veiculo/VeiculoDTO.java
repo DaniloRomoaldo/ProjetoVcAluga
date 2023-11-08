@@ -11,6 +11,9 @@ public class VeiculoDTO {
     private String status;
     private String categoria;
     private int km_total;
+    private String placa;
+
+    private String nome;
 
     public UUID getId() {
         return id;
@@ -50,5 +53,21 @@ public class VeiculoDTO {
 
     public void setKm_total(int km_total) {
         this.km_total = km_total;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }

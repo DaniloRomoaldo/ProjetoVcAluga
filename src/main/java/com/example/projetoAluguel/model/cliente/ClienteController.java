@@ -1,5 +1,6 @@
 package com.example.projetoAluguel.model.cliente;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -15,16 +16,16 @@ public class ClienteController {
 
     @PostMapping
     @ResponseBody
-    public ClienteDTO criar(@RequestBody ClienteDTO clienteDTO){
+    public ClienteDTO criar(@RequestBody ClienteDTO clienteDTO) throws JsonProcessingException {
 
         return clienteService.criar(clienteDTO);
     }
 
-    @PutMapping("/{clienteId}")
+    @PutMapping("/{cpfCnpj}")
     @ResponseBody
-    public ClienteDTO atualizar(@PathVariable("clienteId") UUID clienteId,
+    public ClienteDTO atualizar(@PathVariable("cpfCnpj") String cpfCnpj,
                                 @RequestBody ClienteDTO clienteDTO){
-        return clienteService.atualizar(clienteDTO, clienteId);
+        return clienteService.atualizar(clienteDTO, cpfCnpj);
     }
 
     @GetMapping

@@ -11,7 +11,7 @@ function exibirLista(data){
     clientes.forEach(cliente => listaClientes.appendChild(cliente))
 
     const homeLink = document.createElement("a");
-    homeLink.href = "http://localhost:8080/homePage/home.html";
+    homeLink.href = "http://localhost:8080/home";
     homeLink.textContent = "Voltar";
     listaClientes.appendChild(homeLink);
 }
@@ -54,4 +54,20 @@ function listClient(){
     url = "http://localhost:8080/cliente"
 
     get(url)
+}
+
+function registerRedirect(){
+    url = "http://localhost:8080/register"
+    getRedirect(url);
+}
+
+function getRedirect(url,){
+    fetch(url, {
+        method: "GET",
+        headers: {"Content-Type": "application/json"}
+    })
+        .then(response => {if (response.ok){
+            console.log("ok")
+        }})
+        .catch(error => console.log(error))
 }
