@@ -12,11 +12,12 @@
     <main>
 
         <div id="menuPrincipal">
-            <h1>teste da home</h1>
+            <h1>Olá - <span th:text="${nome}"></span> Bem vindo a sua área administrativa (<span th:text="${funcao}"></span>)</h1>
+
+
 
             <button th:onclick="|window.location.href='register'|">Registrar Cliente</button>
             <button onclick="listClient()">Clientes Ativos</button>
-#criar uma view que redireciona para a página de registro
         </div>
         <div id="cliente-container"></div>
     <script src="/js/clienteList.js"></script>
