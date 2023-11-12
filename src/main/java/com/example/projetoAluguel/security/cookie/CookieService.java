@@ -27,8 +27,9 @@ public class CookieService {
                         .findAny()
                 ).map(Cookie::getValue) // original (e -> e.getValue())
                 .orElse(null);
-
-        valor = URLDecoder.decode(valor, StandardCharsets.UTF_8);
+        if(valor != null){
+            valor = URLDecoder.decode(valor, StandardCharsets.UTF_8);
+        }
         return valor;
     }
 
