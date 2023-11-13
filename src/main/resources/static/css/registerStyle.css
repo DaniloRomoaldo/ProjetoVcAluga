@@ -1,0 +1,82 @@
+*, ::after, ::before {
+    box-sizing: content-box;
+}
+
+.row{
+    margin: 0;
+
+}
+    
+
+
+
+.container-client-register{
+    
+    width: 60%;
+    position: relative;
+    left: 20%;
+    top: 10%;
+    
+   
+}
+h1{
+    text-align: center;
+
+    color: white;
+    font-size: 70px;
+}
+
+.justify-content-md-end2{
+    display: inline;
+    justify-content:center;
+    margin-top: 70px;
+    
+}
+    .btn-danger{
+        margin-left: 50%;
+        
+    }
+    .btn-success:hover{
+        z-index: 2;
+    -webkit-transition: all 200ms ease-in;
+    -webkit-transform: scale(1.1);
+    -ms-transition: all 200ms ease-in;
+    -ms-transform: scale(1.1);   
+    -moz-transition: all 200ms ease-in;
+    -moz-transform: scale(1.1);
+    transition: all 200ms ease-in;
+    transform: scale(1.2);
+    }
+
+
+.mbOneLine{
+    width: 88%;
+    display: flex;
+    flex-flow: row;
+    align-content: space-between;
+    justify-content: space-between;
+
+}
+
+.col-form-label{
+     color: white;
+}
+
+.form-label{
+    color: white;
+}
+
+
+.form-check-label{
+    color: white;
+}
+
+.justify-content-md-end2{
+    position: relative;
+    margin-top: 5%;
+    right: 7%;
+}
+
+.pt-0{
+    width: 500px;
+}

@@ -1,0 +1,136 @@
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="viewport" content="width=device-width" >
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/home.css">
+    <link rel="stylesheet" href="/static/css/buscarMotorista.css">
+
+    <title>Veículos</title>
+
+
+
+    
+</head>
+<body>
+    
+    <header>
+            <!--Barra superior da página-->
+        <nav>
+   
+                 <!-- logo hamburguer-->
+            <div class="mobile-menu"> 
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+                <!--Imagem do menu-->
+            <div class="container-fluid">
+              <img src="/static/img/vcAluga.png" class="rounded-circle">
+            </div>
+            <!--Lista do menu lateral-->
+            <div class="list-group nav-list">
+                <a href="http://localhost:8080/buscarVeiculo" class="list-group-item list-group-item-action list-group-item-secondary">Localizar Veículo</a>
+                <a href="http://localhost:8080/buscarCliente" class="list-group-item list-group-item-action list-group-item-secondary">Consultar Cliente</a>
+                <a href="http://localhost:8080/buscarMotorista" class="list-group-item list-group-item-action list-group-item-secondary">Consultar Motorista</a>
+                <a href="http://localhost:8080/cadastrarFuncionario" class="list-group-item list-group-item-action list-group-item-secondary">Registrar Funcionário</a>
+                <a href="http://localhost:8080/buscarFuncionario" class="list-group-item list-group-item-action list-group-item-secondary">Pesquisar Funcionário</a>
+                <a href="http://localhost:8080/cadastrarFilial" class="list-group-item list-group-item-action list-group-item-secondary">Nova Filial</a>
+            </div>
+        </nav>
+    </header>
+
+
+        <div class="container-seach-locacoes">
+
+            <div class="input-group mb-3 find-loc">
+                <input type="text" class="form-control" required placeholder="Buscar Veículo pela Placa"  aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-success" type="button" data-element="#return-list-active-loc">Buscar</button>
+                </div>
+              </div>
+
+              <script>
+                $(function () {
+                    $(".btn-outline-success").click(function (e) {
+                        e.preventDefault();
+                        var inputVal = $(this).closest('.input-group').find('.form-control').val();
+            
+                        // Verifica se o campo de entrada tem algum valor
+                        if (inputVal.trim() !== "") {
+                            var el = $(this).data('element');
+                            $(el).toggle();
+                        } else {
+                            // Adicione lógica para lidar com o caso em que o campo está vazio, se necessário
+                            console.log("Campo vazio, não exibindo a lista.");
+                            alert("Campo Vazio!")
+                        }
+                    });
+                });
+            </script>
+
+                <div id="return-list-active-loc" style="display: none;"> 
+                  <ul class="list-group">
+                    <li class="list-group-item list-itens-loc">
+                      <input class="form-check-input me-1" type="radio" name="listGroupRadio" value="" id="firstRadio" checked>
+                      <label class="form-check-label" for="firstRadio">adicionar elemento aqui dentro</label>
+                    </li>
+                  </ul>
+
+                  <div class="d-grid gap-2 d-md-flex justify-content-md-end4">
+                    <button type="button" class="btn btn-secondary excluir-bnt" style=" width:150px;" >Excluir</button>
+                    <button type="submit" class="btn btn-warning manu-bnt" data-element="#log-veich-manu">Ordem de Manutenção</button>
+                    
+                  </div>
+
+
+                  <script>
+                      $(function() {
+                      $(".manu-bnt").click(function(e) {
+                        e.preventDefault();
+                        el = $(this).data('element');
+                        $(el).toggle();
+                      });
+                    });
+                  </script>
+
+
+
+
+                  <div id="log-veich-manu" style="display: none;"> 
+
+                    <ul class="list-group list-itens-loc">
+
+                      <li class="list-group-item hist-car-log">histórico do carro</li>
+                    </ul>
+  
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end4">
+                      <button type="submit" class="btn btn-outline-success">Emitir Ordem</button>
+                      
+                    </div>
+          
+                  </div>
+        
+                </div>
+
+                  
+              
+
+        </div>
+
+    
+      
+
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button onclick="home()" type="button" class="btn btn-danger" style=" width:150px;" >Voltar</button>
+      </div>
+
+
+    <script src="/static/js/home.js"></script>
+</body>
+</html>

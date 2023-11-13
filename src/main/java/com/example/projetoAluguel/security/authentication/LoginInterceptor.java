@@ -1,6 +1,5 @@
 package com.example.projetoAluguel.security.authentication;
 
-import com.example.projetoAluguel.security.cookie.CookieService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
@@ -14,12 +13,13 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception{
 
 
-        if (CookieService.getCookie(request,"funcionarioId") != null){
-            return true;
-        }
-
-        response.sendRedirect("/login");
-        return false;
+//        if (CookieService.getCookie(request,"funcionarioId") != null){
+//            return true;
+//        }
+//
+//        response.sendRedirect("/login");
+//        return false;
+        return true; //permitir todo acesso para trablhar as pags
 
 
     }

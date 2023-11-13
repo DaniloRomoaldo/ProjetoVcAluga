@@ -1,4 +1,4 @@
-package com.example.projetoAluguel.ViewControllers.home;
+package com.example.projetoAluguel.ViewControllers;
 
 import com.example.projetoAluguel.security.cookie.CookieService;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,0 +1,114 @@
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="viewport" content="width=device-width" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="/static/css/home.css">
+    <link rel="stylesheet" href="/static/css/registerStyle.css">
+
+    <title>Cadastrar Veiculo</title>
+    
+</head>
+<body>
+    
+    <header>
+            <!--Barra superior da página-->
+        <nav>
+
+   
+                 <!-- logo hamburguer-->
+            <div class="mobile-menu"> 
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+                <!--Imagem do menu-->
+            <div class="container-fluid">
+              <img src="/static/img/vcAluga.png" class="rounded-circle">
+            </div>
+            <!--Lista do menu lateral-->
+            <div class="list-group nav-list">
+                <a href="http://localhost:8080/buscarVeiculo" class="list-group-item list-group-item-action list-group-item-secondary">Localizar Veículo</a>
+                <a href="http://localhost:8080/buscarCliente" class="list-group-item list-group-item-action list-group-item-secondary">Consultar Cliente</a>
+                <a href="http://localhost:8080/buscarMotorista" class="list-group-item list-group-item-action list-group-item-secondary">Consultar Motorista</a>
+                <a href="http://localhost:8080/cadastrarFuncionario" class="list-group-item list-group-item-action list-group-item-secondary">Registrar Funcionário</a>
+                <a href="http://localhost:8080/buscarFuncionario" class="list-group-item list-group-item-action list-group-item-secondary">Pesquisar Funcionário</a>
+                <a href="http://localhost:8080/cadastrarFilial" class="list-group-item list-group-item-action list-group-item-secondary">Nova Filial</a>
+            </div>
+        </nav>
+    </header>
+
+
+                <!--Registrar Cliente-->
+                <div class="container-client-register">
+                    <h1>Cadastrar Veículo</h1>
+                    
+                    <form>
+
+                        <div class="row mb-3">
+                          <label  class="col-sm-2 col-form-label">Filial Proprietária</label>
+                          <div class="col-sm-10">
+                            <input type="text" required class="form-control" id="inputFilialProprie">
+                          </div>
+                        </div>
+
+                        <div class="row mb-3">
+                          <label  class="col-sm-2 col-form-label">Modelo de Veículo</label>
+                          <div class="col-sm-10">
+                            <input type="text" required class="form-control" id="inputModelo">
+                          </div>
+                        </div>
+
+
+
+                     <div class="row mb-4 mbOneLine">
+
+                          
+                          
+                          <div class="mb-2 row Status">
+                            <label  class="col-sm-2 col-form-label">Categoria</label>
+
+                            <div class="col-sm-10">
+                              <input type="text" required class="form-control" id="inputCategoria">
+                            </div>
+                          </div>
+
+                          
+                          <div class="mb-2 row Status">
+                            <label  class="col-sm-2 col-form-label">Status</label>
+
+                            <div class="col-sm-10">
+                              <input type="text" required class="form-control" >
+                            </div>
+                          </div>
+
+                          <div class="mb-2 row Status">
+                            <label  class="col-sm-2 col-form-label">KM</label>
+
+                            <div class="col-sm-10">
+                              <input type="text" required class="form-control" id="inputStatus">
+                            </div>
+                          </div>
+  
+
+                     </div>
+
+                      
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end2">
+                            <button type="submit" class="btn btn-success">Cadastrar Veículo</button>
+                            <button onclick="home()" type="button"class="btn btn-danger" style=" width:150px;" href="#" >Voltar</button>
+                          </div>
+
+
+                      </form>
+
+                </div>
+                
+
+
+    <script src="/static/js/home.js"></script>
+</body>
+</html>
