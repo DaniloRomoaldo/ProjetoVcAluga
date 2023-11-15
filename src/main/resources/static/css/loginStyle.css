@@ -139,3 +139,18 @@ label {
     padding: 0px;
 }
 
+.alert-warning{
+    background: none;
+    border: none;
+    color: rgba(255, 255, 0, 0.67);
+    font-style: italic;
+    font-family: 'Roboto Condensed';
+}
+
+.alert-danger{
+    background: none;
+    border: none;
+    color: rgba(255, 0, 0, 0.67);
+    font-style: italic;
+    font-family: 'Roboto Condensed';
+}

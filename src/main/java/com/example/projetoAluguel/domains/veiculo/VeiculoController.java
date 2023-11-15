@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/veiculo", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -32,10 +33,10 @@ public class VeiculoController {
         return veiculoService.getALL();
     }
 
-    @DeleteMapping("/{placa}")
+    @DeleteMapping("/{veiculoId}")
     @ResponseBody
-    public String deletar(@PathVariable("placa")String placa){
-        return veiculoService.delete(placa);
+    public String deletar(@PathVariable("veiculoId") UUID veiculoId){
+        return veiculoService.delete(veiculoId);
     }
 
 }

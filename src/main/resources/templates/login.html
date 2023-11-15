@@ -3,9 +3,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="/static/css/loginStyle.css"  rel="stylesheet" >
-
     <link rel="icon" type="image/x-icon" href="/static/favicon-32x32.png"/>
 
 
@@ -37,13 +38,41 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-control-label">CODIGO DE MATRICULA</label>
-                                <input type="number" th:field="*{cod}" class="form-control">
+                                <input type="password" th:field="*{cod}" class="form-control" id="codInput">
+
+                                <script>
+                                    $(document).ready(function () {
+                                        // Intercepta o evento de envio do formulário
+                                        $("form").submit(function (event) {
+                                            // Pega o valor do campo de senha
+                                            var codValue = $("#codInput").val();
+
+                                            // Verifica se é um número
+                                            if (!isNaN(codValue)) {
+                                                // Converte para inteiro
+                                                var codInt = parseInt(codValue);
+
+                                                // Atualiza o valor no campo de senha (oculto)
+                                                $("#codInput").val(codInt);
+                                            }  else {
+                                            // Se não for um número, cancela o envio do formulário
+                                            event.preventDefault();
+
+                                            // Muda o estilo do campo de entrada
+                                            $('#codInput').css('border', '1px solid red');
+
+                                            // Adiciona a div de alerta
+                                            $('#codInput').after('<div class="alert alert-warning" role="alert">Código inválido!</div>');
+                                        }
+                                        });
+                                    });
+                                </script>
                             </div>
 
                             <div class="col-lg-12 loginbttm">
                                 <div class="col-lg-6 login-btm login-text">
                                     <!-- Error Message -->
-                                    <p th:if="${param.error}">Erro ao realizar login</p>
+                                    <p th:if="${param.error}" class="alert alert-danger">Usuário ou Senha inválidos!</p>
                                 </div>
                                 <div class="col-lg-6 login-btm login-button">
 

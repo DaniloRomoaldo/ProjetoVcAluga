@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -90,8 +91,8 @@ public class VeiculoService {
                 .map(this::converter).collect(Collectors.toList());
     }
 
-    public String delete(String placa){
-        repository.deleteById(repository.findByPlaca(placa).getId());
+    public String delete(UUID veiculoId){
+        repository.deleteById(veiculoId);
         return "Veiculo DELETADO";
     }
 
