@@ -51,7 +51,7 @@
             <div class="input-group mb-3 find-loc">
                 <input type="text" class="form-control" required placeholder="CPF ou CNPJ do Cliente"  aria-describedby="basic-addon2">
                 <div class="input-group-append">
-                  <button class="btn btn-outline-success" type="button" data-element="#return-list-active-loc">Buscar</button>
+                  <button class="btn btn-outline-success" type="button" data-element="#return-list-active-loc" onclick="listLocacoesAtivas()">Buscar</button>
                 </div>
               </div>
 
@@ -76,11 +76,8 @@
 
                 <div id="return-list-active-loc" style="display: none;">
                   
-                  <ul class="list-group">
-                    <li class="list-group-item list-itens-loc">
-                      <input class="form-check-input me-1" type="radio" name="listGroupRadio" value="" id="firstRadio" checked>
-                      <label class="form-check-label" for="firstRadio">adicionar elemento aqui dentro</label>
-                    </li>
+                  <ul class="list-group" id="list-loc-ativ">
+
                   </ul>
 
                   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -104,5 +101,6 @@
 
 
     <script src="/static/js/home.js"></script>
+    <script src="/static/js/locacoesAtivas.js"></script>
 </body>
 </html>

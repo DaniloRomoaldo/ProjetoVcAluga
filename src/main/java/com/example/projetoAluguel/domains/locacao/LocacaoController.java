@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping(value = "/locacao", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/locacoes", produces = MediaType.APPLICATION_JSON_VALUE)
 public class LocacaoController {
 
     @Autowired
