@@ -49,7 +49,9 @@ document.addEventListener("DOMContentLoaded", function (){
         if (idSelecionado){
             url_finalizar = url_locacoes+"/"+idSelecionado  // roda do funcionário
             body = {"status": "Finalizado"}
+
             finalizarLocacao(url_finalizar, body);
+
         }else {
             console.log("erro")
         }
@@ -58,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function (){
 
 async function finalizarLocacao(url_finalizar, body){
     const confirmed = window.confirm("Finalizar Locação selecionada?");
+
 
     if (!confirmed) {
         return;  // Se o usuário clicou em "Cancelar", interrompe a execução da função
@@ -69,7 +72,6 @@ async function finalizarLocacao(url_finalizar, body){
             body: JSON.stringify(body)
         });
         if (putLocacao.ok){
-            console.log("alterado")
             window.alert("Locação Finalizada!");
             location.reload();
         }else {
@@ -79,4 +81,5 @@ async function finalizarLocacao(url_finalizar, body){
     } catch (error){
         console.error(error);
     }
+
 }

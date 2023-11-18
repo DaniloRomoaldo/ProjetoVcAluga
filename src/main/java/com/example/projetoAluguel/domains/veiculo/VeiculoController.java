@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,11 +28,6 @@ public class VeiculoController {
         return veiculoService.atualizar(veiculoDTO);
     }
 
-    @GetMapping
-    @ResponseBody
-    public List<VeiculoDTO> getALL(){
-        return veiculoService.getALL();
-    }
 
     @DeleteMapping("/{veiculoId}")
     @ResponseBody
@@ -39,4 +35,31 @@ public class VeiculoController {
         return veiculoService.delete(veiculoId);
     }
 
+//    @GetMapping
+//    @ResponseBody
+//    public List<VeiculoDTO> getALL(){
+//        return veiculoService.getALL();
+//    }
+
+    @GetMapping // testando multiplos paramentos na mesma rota de requisição
+    @ResponseBody
+    public List<VeiculoDTO> getVeiculos(
+            @RequestParam(value = "placa", required = false) String placa ,
+            @RequestParam(value = "status", required = false) String status,
+            @RequestParam(value = "categoria", required = false)String categoria){
+
+        if (placa != null){
+            return Collections.singletonList(veiculoService.getVeiculoPlaca(placa));
+        } else if (status != null) {
+            return veiculoService.getVeiculoStatus(status);
+        } else if (categoria != null) {
+            return veiculoService.getVeiculoCategoria(categoria);
+        } else {
+            return veiculoService.getALL();
+        }
+
+    }
+
+
 }
+

@@ -1,9 +1,17 @@
 url_funcionario = "http://localhost:8080/funcionario"
 
-function listFuncio(){
+function listFuncio(route, value){
     event.preventDefault();
     const typeGet = "funcionario";
-    get(typeGet,url_funcionario);
+    let url_busca;
+
+    if (route === "funcao"){
+        url_busca = url_funcionario+"?funcao="+value;
+    }else {
+        url_busca = url_funcionario+"?nome="+value;
+    }
+
+    get(typeGet,url_busca);
 }
 
 function appendListFuncionario(data){

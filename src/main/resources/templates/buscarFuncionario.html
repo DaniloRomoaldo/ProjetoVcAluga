@@ -48,22 +48,38 @@
         <div class="container-seach-locacoes">
 
             <div class="input-group mb-3 find-loc">
-                <input type="text" class="form-control" placeholder="Buscar Funcionário pelo Nome"  aria-describedby="basic-addon2">
+                <input type="text" class="form-control" placeholder="Buscar Funcionário por: Nome ou Função"  aria-describedby="basic-addon2">
                 <div class="input-group-append">
-                  <button class="btn btn-outline-success" type="button" data-element="#return-list-active-loc" onclick="listFuncio()">Buscar</button>
+                  <button class="btn btn-outline-success" type="button" data-element="#return-list-active-loc">Buscar</button>
                 </div>
               </div>
 
               <script>
                 $(function () {
-                    $(".btn-outline-success").click(function (e) {
-                        e.preventDefault();
+                    $(".btn-outline-success").click(function (vazio) {
+                        vazio.preventDefault();
                         var inputVal = $(this).closest('.input-group').find('.form-control').val();
             
                         // Verifica se o campo de entrada tem algum valor
                         if (inputVal.trim() !== "") {
-                            var el = $(this).data('element');
-                            $(el).toggle();
+                            var elem = $(this).data('element');
+                            var valorInput = $(elem).val();
+                            var valorPesquisa = inputVal.toUpperCase()
+                            var patternFuncao = ["VENDEDOR", "MECÂNICO", "MECANICO", "ADMINISTRADOR", "GERENTE"]
+
+                            if (patternFuncao.includes(valorPesquisa)){
+                                if (valorPesquisa === "MECANICO"){
+                                    valorPesquisa = "MECÂNICO";
+                                }
+                                console.log(valorPesquisa);
+                                listFuncio("funcao", valorPesquisa)
+                                $(elem).toggle();
+                            }else{
+                                console.log(valorPesquisa);
+                                listFuncio("nome", valorPesquisa)
+                                $(elem).toggle();
+                            }
+
                         } else {
                             // Adicione lógica para lidar com o caso em que o campo está vazio, se necessário
                             console.log("Campo vazio, não exibindo a lista.");

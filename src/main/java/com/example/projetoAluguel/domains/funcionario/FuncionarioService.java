@@ -89,6 +89,13 @@ public class FuncionarioService {
         return result;
     }
 
+
+
+    public  String delete(UUID funcionarioId){
+        repository.deleteById(funcionarioId);
+        return "Funcionário DELETADO!";
+    }
+
     public List<FuncionarioDTO> getALL(){
         return repository
                 .findAll()
@@ -96,9 +103,18 @@ public class FuncionarioService {
                 .map(this::converter).collect(Collectors.toList());
     }
 
-    public  String delete(UUID funcionarioId){
-        repository.deleteById(funcionarioId);
-        return "Funcionário DELETADO!";
+    public List<FuncionarioDTO> getFuncao(String funcao){
+        return repository
+                .findByFuncao(funcao)
+                .stream()
+                .map(this::converter).collect(Collectors.toList());
+    }
+
+    public List<FuncionarioDTO> getNome(String nome){
+        return repository
+                .findByNomeContains(nome)
+                .stream()
+                .map(this::converter).collect(Collectors.toList());
     }
 
 }

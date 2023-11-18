@@ -1,9 +1,20 @@
 url_veiculo = "http://localhost:8080/veiculo"
 
-function listVeiculos(){
+function listVeiculos(route, value){
     event.preventDefault();
     const typeGet = "veiculo";
-    get(typeGet, url_veiculo)
+    let url_busca;
+
+    if (route === "placa") {
+        url_busca = url_veiculo + "?placa=" + value;
+    } else if (route === "status" ) {
+        url_busca = url_veiculo+"?status="+value;
+    }else if (route === "cat"){
+        url_busca = url_veiculo+"?categoria="+value;
+    }else {
+        url_busca = url_veiculo;
+    }
+    get(typeGet, url_busca)
 }
 
 function appendListVeiculo(data){
@@ -16,7 +27,7 @@ function appendListVeiculo(data){
         var inputElement = criarInput("listGroupRadio", veiculo.id);
         var labelElement = criarLabel(veiculo.id);
         labelElement.textContent= veiculo.nome + ", Status: " + veiculo.status + " - categoria: " + veiculo.categoria +
-            "KM: " + veiculo.km_total + "- Local Atual: " + veiculo.filialDTO.nome;
+            " KM: " + veiculo.km_total + "- Local Atual: " + veiculo.filialDTO.nome;
 
         item.appendChild(inputElement);
         item.appendChild(labelElement);

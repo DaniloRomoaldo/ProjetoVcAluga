@@ -32,10 +32,10 @@ public class LoginViewController {
     @PostMapping()
     public String loginRequestForm(@ModelAttribute Login login, Model model, HttpServletResponse response) throws IOException {
         model.addAttribute("login", login);
-        Funcionario funcionario = repositoryFuncionario.findByCodFuncionarioAndNome(login.getCod(), login.getNome());
+        Funcionario funcionario = repositoryFuncionario.findByCodFuncionarioAndNome(login.getCod(), login.getNome().toUpperCase());
 
         if (funcionario != null){
-            int tempoLogin = (60*30);
+            int tempoLogin = (60*60*30);
             CookieService.setCookie(response, "funcionarioId", String.valueOf(funcionario.getId()), tempoLogin);
             CookieService.setCookie(response, "funcionarioNome", String.valueOf(funcionario.getNome()), tempoLogin);
             CookieService.setCookie(response, "funcionarioFuncao", String.valueOf(funcionario.getFuncao()), tempoLogin);

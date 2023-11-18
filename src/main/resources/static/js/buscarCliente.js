@@ -1,9 +1,19 @@
 url_cliente = "http://localhost:8080/cliente"
 
-function  listClients(){
+function  listClients(route, value){
     event.preventDefault();
     const typeGet = "cliente";
-    get(typeGet,url_cliente);
+    let url_busca;
+
+    if (route === "registro"){
+        url_busca = url_cliente+"?registro="+value;
+    }else if (route === "tipo"){
+        url_busca = url_cliente+"?tipo="+value;
+    }else {
+        url_busca = url_cliente+"?nome="+value;
+    }
+
+    get(typeGet,url_busca);
 }
 
 function appednListClients(data){

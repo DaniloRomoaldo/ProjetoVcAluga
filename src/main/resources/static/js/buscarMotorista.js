@@ -1,9 +1,16 @@
 url_motorista = "http://localhost:8080/motorista"
 
-function listMotorista(){
+function listMotorista(route, value){
     event.preventDefault();
     const typeGet = "motorista";
-    get(typeGet,url_motorista)
+    let url_busca;
+
+    if (route === "CNH"){
+        url_busca=url_motorista+"?cnh="+value;
+    }else {
+        url_busca=url_motorista+"?nome="+value;
+    }
+    get(typeGet,url_busca);
 }
 
 function appendListMotorista(data){

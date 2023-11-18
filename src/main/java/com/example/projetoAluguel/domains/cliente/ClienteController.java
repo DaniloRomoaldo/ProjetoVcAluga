@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,12 +29,7 @@ public class ClienteController {
         return clienteService.atualizar(clienteDTO, cpfCnpj);
     }
 
-    @GetMapping
-    @ResponseBody
-    public List<ClienteDTO> getALL(){
 
-        return clienteService.getALL();
-    }
 
     @DeleteMapping("/{clienteId}")
     @ResponseBody
@@ -41,4 +37,34 @@ public class ClienteController {
 
         return clienteService.delete(clienteId);
     }
+
+
+    @GetMapping
+    @ResponseBody
+    public List<ClienteDTO> getVeiculos(
+            @RequestParam(value = "registro", required = false)String registro,
+            @RequestParam(value = "nome", required = false)String nome,
+            @RequestParam(value = "tipo", required = false)String tipo){
+
+        if (registro != null){
+            return Collections.singletonList(clienteService.getRegistro(registro));
+        } else if (tipo != null) {
+            return clienteService.getTipo(tipo);
+        } else {
+            return clienteService.getNome(nome);
+        }
+
+
+
+    }
+
+
+
+//    @GetMapping
+//    @ResponseBody
+//    public List<ClienteDTO> getALL(){
+//
+//        return clienteService.getALL();
+//    }
+
 }

@@ -29,16 +29,29 @@ public class FuncionarioController {
         return funcionarioService.atualizar(funcionarioDTO, codFuncionario);
     }
 
-    @GetMapping
-    @ResponseBody
-    public List<FuncionarioDTO> getALL(){
-        return funcionarioService.getALL();
-    }
 
     @DeleteMapping("/{funcionarioId}")
     @ResponseBody
     public String deletar(@PathVariable("funcionarioId") UUID funcionarioId){
         return funcionarioService.delete(funcionarioId);
     }
+
+
+    @GetMapping
+    @ResponseBody
+    public List<FuncionarioDTO> getFuncionario(@RequestParam(value = "funcao", required = false) String funcao,
+                                               @RequestParam(value = "nome", required = false)String nome){
+        if (funcao != null){
+            return funcionarioService.getFuncao(funcao);
+        }else {
+            return funcionarioService.getNome(nome);
+        }
+    }
+
+//    @GetMapping
+//    @ResponseBody
+//    public List<FuncionarioDTO> getALL(){
+//        return funcionarioService.getALL();
+//    }
 
 }

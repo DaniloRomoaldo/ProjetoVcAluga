@@ -48,22 +48,44 @@
         <div class="container-seach-locacoes">
 
             <div class="input-group mb-3 find-loc">
-                <input type="text" class="form-control" placeholder="Buscar Cliente CPF ou CNPJ"  aria-describedby="basic-addon2">
+                <input type="text" class="form-control" placeholder="Buscar Cliente por: CPF ou CNPJ"  aria-describedby="basic-addon2">
                 <div class="input-group-append">
-                  <button class="btn btn-outline-success" type="button" data-element="#return-list-active-loc" onclick="listClients()" >Buscar</button>
+                  <button class="btn btn-outline-success" type="button" data-element="#return-list-active-loc" >Buscar</button>
                 </div>
               </div>
 
               <script>
                 $(function () {
-                    $(".btn-outline-success").click(function (e) {
-                        e.preventDefault();
+                    $(".btn-outline-success").click(function (vazio) {
+                        vazio.preventDefault();
                         var inputVal = $(this).closest('.input-group').find('.form-control').val();
-            
                         // Verifica se o campo de entrada tem algum valor
                         if (inputVal.trim() !== "") {
-                            var el = $(this).data('element');
-                            $(el).toggle();
+                            var elem = $(this).data('element');
+                            var valorInput = $(elem).val();
+                            var valorPesquisa = inputVal.toUpperCase().replace(/\./g,"").replace(/\//g, "").replace(/-/g,"").replace(/Í/g,"I");
+                            var patternCpf = /^[0-9]{11}$/;
+                            var patternCnpj = /^[0-9]{14}$/;
+                            var patternTipo = ["PESSOA FISICA", "PESSOA JURIDICA"];
+
+                            if (patternCpf.test(valorPesquisa)){ // depois adicionar o tipo de cada um cpf pessoa fisica/ cnpj pessoa jurídica
+                               // console.log("este é um cpf:"+valorPesquisa)
+                                listClients("registro", valorPesquisa)
+                                $(elem).toggle();
+
+                            }else if (patternCnpj.test(valorPesquisa)){
+                              //  console.log("este é um CNPJ:"+valorPesquisa)
+                                listClients("registro", valorPesquisa)
+                                $(elem).toggle();
+                            }else if (patternTipo.includes(valorPesquisa)){
+                                listClients("tipo", valorPesquisa)
+                                $(elem).toggle();
+                            }else {
+                                listClients("nome", valorPesquisa)
+                                $(elem).toggle();
+                            }
+
+
                         } else {
                             // Adicione lógica para lidar com o caso em que o campo está vazio, se necessário
                             console.log("Campo vazio, não exibindo a lista.");

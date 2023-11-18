@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,12 +30,7 @@ public class MotoristaController {
         return motoristaService.atualizar(motoristaDTO, cnh);
     }
 
-    @GetMapping
-    @ResponseBody
-    public List<MotoristaDTO> getALL(){
 
-        return motoristaService.getALL();
-    }
 
     @DeleteMapping("/{motoristaId}")
     @ResponseBody
@@ -42,5 +38,25 @@ public class MotoristaController {
 
         return motoristaService.delete(motoristaId);
     }
+
+    @GetMapping
+    @ResponseBody
+    public List<MotoristaDTO> getMotorista(@RequestParam(value = "cnh", required = false)String cnh,
+                                           @RequestParam(value = "nome", required = false)String nome){
+
+        if (cnh != null){
+            return Collections.singletonList(motoristaService.getCnh(cnh));
+        }else {
+            return motoristaService.getMotorista(nome);
+        }
+
+    }
+
+//    @GetMapping
+//    @ResponseBody
+//    public List<MotoristaDTO> getALL(){
+//
+//        return motoristaService.getALL();
+//    }
 
 }

@@ -78,6 +78,14 @@ public class ClienteService {
         return result;
     }
 
+
+
+    public String delete(UUID clientId){
+        repository.deleteById(clientId);
+        return "CLIENTE DELETADO!";
+    }
+
+
     public List<ClienteDTO> getALL(){
         return repository
                 .findAll()
@@ -85,8 +93,21 @@ public class ClienteService {
                 .map(this::converter).collect(Collectors.toList());
     }
 
-    public String delete(UUID clientId){
-        repository.deleteById(clientId);
-        return "CLIENTE DELETADO!";
+    public ClienteDTO getRegistro(String cpfCnpj){
+        return converter(repository.findByCpfCnpj(cpfCnpj));
+    }
+
+    public List<ClienteDTO> getTipo(String tipo){
+        return repository
+                .findByTipoContains(tipo)
+                .stream()
+                .map(this::converter).collect(Collectors.toList());
+    }
+
+    public List<ClienteDTO> getNome(String nome){
+        return repository
+                .findByNomeContains(nome)
+                .stream()
+                .map(this::converter).collect(Collectors.toList());
     }
 }

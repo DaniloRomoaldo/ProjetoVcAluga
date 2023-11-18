@@ -70,16 +70,30 @@ public class MotoristaService {
         return result;
     }
 
+
+    public String delete(UUID motoristaId){
+        repository.deleteById(motoristaId);
+        return "Motorista Deletado!";
+    }
+
+
+    public MotoristaDTO getCnh(String cnh){
+        return converter(repository.findByCnh(cnh));
+    }
+
+    public List<MotoristaDTO> getMotorista(String nome){
+        return repository
+                .findByNomeContains(nome)
+                .stream()
+                .map(this::converter).collect(Collectors.toList());
+    }
+
+
     public List<MotoristaDTO> getALL(){
         return repository
                 .findAll()
                 .stream()
                 .map(this::converter).collect(Collectors.toList());
-    }
-
-    public String delete(UUID motoristaId){
-        repository.deleteById(motoristaId);
-        return "Motorista Deletado!";
     }
 
 }

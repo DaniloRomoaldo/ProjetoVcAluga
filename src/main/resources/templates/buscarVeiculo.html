@@ -51,22 +51,69 @@
         <div class="container-seach-locacoes">
 
             <div class="input-group mb-3 find-loc">
-                <input type="text" class="form-control" required placeholder="Buscar Veículo pela Placa"  aria-describedby="basic-addon2">
+                <input type="text" class="form-control" required placeholder="Buscar Veículo por: Placa, Status ou Categoira "  aria-describedby="basic-addon2" id="valor-busc-veic">
                 <div class="input-group-append">
-                  <button class="btn btn-outline-success" type="button" data-element="#return-list-active-loc" onclick="listVeiculos()">Buscar</button>
+                  <button class="btn btn-outline-success" type="button" data-element="#return-list-active-loc" >Buscar</button>
                 </div>
               </div>
 
               <script>
                 $(function () {
-                    $(".btn-outline-success").click(function (e) {
-                        e.preventDefault();
+                    $(".btn-outline-success").click(function (vazio) { // veiricar o valor do campo vazio passar o que foi digitado para um método que direcionada para a requisição correta
+                        vazio.preventDefault();
                         var inputVal = $(this).closest('.input-group').find('.form-control').val();
-            
+                        var inputVal2 = $(this).closest('.input-group').find('.form-control');
+
                         // Verifica se o campo de entrada tem algum valor
                         if (inputVal.trim() !== "") {
-                            var el = $(this).data('element');
-                            $(el).toggle();
+                            var elem = $(this).data('element');
+                            var valorInput = $(elem).val();
+                            var valorPesquisa = inputVal.toUpperCase().replace(/-/g,"").replace(/Í/, "I");
+                            var pattern =  /^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$/;
+                            var status = ["DISPONIVEL", "INDISPONIVEL", "MANUTENÇÃO"];
+                            var categoria = ["HATCH", "SEDAN", "SUV"]
+
+                             if (pattern.test(valorPesquisa)){
+                                 listVeiculos("placa",valorPesquisa);
+                                 console.log(valorPesquisa)
+                                 $(inputVal2).css({
+                                     "color":"",
+                                     "font-style": "",
+                                     "border-color": "",
+                                     "border-width": ""
+                                 });
+                                 $(elem).toggle();
+                             }else if (status.includes(valorPesquisa)){
+                                 listVeiculos("status",valorPesquisa);
+                                 console.log(valorPesquisa)
+                                 $(inputVal2).css({
+                                     "color":"",
+                                     "font-style": "",
+                                     "border-color": "",
+                                     "border-width": ""
+                                 });
+                                 $(elem).toggle();
+                             }else if (categoria.includes(valorPesquisa)){
+                                 listVeiculos("cat", valorPesquisa);
+                                 console.log(valorPesquisa)
+                                 $(inputVal2).css({
+                                     "color":"",
+                                     "font-style": "",
+                                     "border-color": "",
+                                     "border-width": ""
+                                 });
+                                 $(elem).toggle();
+                             }else {
+                                 $(inputVal2).css({
+                                     "color":"red",
+                                     "font-style": "italic",
+                                     "border-color": "red",
+                                     "border-width": "3px"
+                                 });
+
+                             }
+
+
                         } else {
                             // Adicione lógica para lidar com o caso em que o campo está vazio, se necessário
                             console.log("Campo vazio, não exibindo a lista.");

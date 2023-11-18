@@ -84,6 +84,13 @@ public class VeiculoService {
         return result;
     }
 
+
+
+    public String delete(UUID veiculoId){
+        repository.deleteById(veiculoId);
+        return "Veiculo DELETADO";
+    }
+
     public List<VeiculoDTO> getALL(){
         return repository
                 .findAll()
@@ -91,9 +98,23 @@ public class VeiculoService {
                 .map(this::converter).collect(Collectors.toList());
     }
 
-    public String delete(UUID veiculoId){
-        repository.deleteById(veiculoId);
-        return "Veiculo DELETADO";
+
+
+    public VeiculoDTO getVeiculoPlaca(String placa){
+        return converter(repository.findByPlaca(placa));
+    }
+
+    public List<VeiculoDTO> getVeiculoStatus(String status){
+        return repository.findByStatus(status)
+                .stream()
+                .map(this::converter).collect(Collectors.toList());
+
+    }
+
+    public  List<VeiculoDTO> getVeiculoCategoria(String categoria){
+        return repository.findByCategoria(categoria)
+                .stream()
+                .map(this::converter).collect(Collectors.toList());
     }
 
 }
