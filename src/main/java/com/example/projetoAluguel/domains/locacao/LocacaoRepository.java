@@ -11,4 +11,5 @@ import java.util.UUID;
 public interface LocacaoRepository extends JpaRepository<Locacao, UUID> {
     Locacao findByCodLocacao(int codLocacao);
     List<Locacao> findByCliente(Cliente cliente);
+    List<Locacao> findByStatus (String status);
 }

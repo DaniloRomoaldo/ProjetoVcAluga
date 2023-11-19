@@ -49,22 +49,50 @@
         <div class="container-seach-locacoes">
 
             <div class="input-group mb-3 find-loc">
-                <input type="text" class="form-control" required placeholder="CPF ou CNPJ do Cliente"  aria-describedby="basic-addon2">
+                <input type="text" class="form-control" required placeholder="Pesquisar: Nome do Cliente, CPF/CNPJ ou codigo da Locação"  aria-describedby="basic-addon2">
                 <div class="input-group-append">
-                  <button class="btn btn-outline-success" type="button" data-element="#return-list-active-loc" onclick="listLocacoesAtivas()">Buscar</button>
+                  <button class="btn btn-outline-success" type="button" data-element="#return-list-active-loc">Buscar</button>
                 </div>
               </div>
 
               <script>
                 $(function () {
-                    $(".btn-outline-success").click(function (e) {
-                        e.preventDefault();
+                    $(".btn-outline-success").click(function (vazio) {
+                        vazio.preventDefault();
                         var inputVal = $(this).closest('.input-group').find('.form-control').val();
             
                         // Verifica se o campo de entrada tem algum valor
                         if (inputVal.trim() !== "") {
-                            var el = $(this).data('element');
-                            $(el).toggle();
+                            var elem = $(this).data('element');
+                            var valorPesquisa = inputVal.toUpperCase().replace(/\./g,"").replace(/\//g, "").replace(/-/g,"").replace(/Í/g,"I");
+                            var patternStatus = ["ATIVA", "FINALIZADA", "AGUARDANDO", "FINALIZADO"]
+                            var patternCpf = /^[0-9]{11}$/;
+                            var patternCnpj = /^[0-9]{14}$/;
+
+                            if (patternStatus.includes(valorPesquisa)){
+                                if (valorPesquisa === "FINALIZADA"){
+                                    valorPesquisa = "FINALIZADO";
+                                }
+                                listLocacoesAtivas("status", valorPesquisa);
+
+                            }else if (!isNaN(parseInt(valorPesquisa))){
+
+                                // verificação se o número é um tipo de registro ou código de locação
+                                if (patternCpf.test(valorPesquisa)){
+                                    listLocacoesAtivas("cpfCnpj", valorPesquisa)
+                                }else if (patternCnpj.test(valorPesquisa)){
+                                    listLocacoesAtivas("cpfCnpj", valorPesquisa)
+                                }else {
+                                    listLocacoesAtivas("cod", valorPesquisa)
+                                    console.log("é um código, enviar para a rota de código")
+                                }
+
+
+                            }else {
+                                listLocacoesAtivas("nome", valorPesquisa)
+                            }
+
+                            $(elem).toggle();
                         } else {
                             // Adicione lógica para lidar com o caso em que o campo está vazio, se necessário
                             console.log("Campo vazio, não exibindo a lista.");

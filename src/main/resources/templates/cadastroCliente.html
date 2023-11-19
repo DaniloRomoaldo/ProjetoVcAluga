@@ -30,7 +30,7 @@
             </div>
                 <!--Imagem do menu-->
             <div class="container-fluid">
-              <img src="/static/img/vcAluga.png" class="rounded-circle">
+              <img src="/static/img/vcAluga.png" class="rounded-circle" alt="">
             </div>
             <!--Lista do menu lateral-->
             <div class="list-group nav-list">
@@ -49,39 +49,50 @@
                 <div class="container-client-register">
                     <h1>Cadastrar Cliente</h1>
                     
-                    <form>
+                    <form onsubmit="registerCliente(event)">
 
                         <div class="row mb-3">
                           <label  class="col-sm-2 col-form-label">Nome completo</label>
                           <div class="col-sm-10">
-                            <input type="text" required class="form-control" id="inputEmail3">
+                              <label for="input-nome-cliente"></label><input type="text" required class="form-control" id="input-nome-cliente">
                           </div>
                         </div>
 
                         <div class="row mb-3">
                           <label  class="col-sm-2 col-form-label">CPF ou CNPJ</label>
                           <div class="col-sm-10">
-                            <input type="text"required class="form-control" id="inputPassword3">
+                              <label for="input-cpf-cnpj-cliente"></label><input type="text" required class="form-control" pattern="[0-9]{11}|[0-9]{14}" id="input-cpf-cnpj-cliente">
                           </div>
                         </div>
+
+
 
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label">Telefone</label>
                             <div class="col-sm-10">
-                              <input type="text" required class="form-control" >
+                                <label for="input-telefone-cliente"></label><input type="text" required class="form-control" pattern="[0-9]{11}" id="input-telefone-cliente" >
                             </div>
                           </div>
 
-                        <fieldset class="row mb-3">
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label">Bonus Fidelidade</label>
+                            <div class="col-sm-10">
+                                <label for="input-fidelidade-cliente"></label><input type="number" min="0" max="1000" required class="form-control"  id="input-fidelidade-cliente" >
+                            </div>
+                        </div>
+
+
+                        <fieldset class="row mb-3" id="list-tip-client"> <!--campo que contém a lista de tipos -->
+
                           <legend class="col-form-label col-sm-2 pt-0">Tipo de Registro</legend>
                           <div class="col-sm-10">
                             <div class="form-check">
-                              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
-                              <label class="form-check-label" for="gridRadios1">Pessoa Física</label>
+                              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="PESSOA FISICA" checked>
+                              <label class="form-check-label" for="gridRadios1">PESSOA FISICA</label>
                             </div>
                             <div class="form-check">
-                              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                              <label class="form-check-label" for="gridRadios2">Pessoa Jurídica</label>
+                              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="PESSOA JURIDICA">
+                              <label class="form-check-label" for="gridRadios2">PESSOA JURIDICA</label>
                             </div>
                             
                           </div>
@@ -89,20 +100,21 @@
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end2">
                             <button type="submit" class="btn btn-success">Cadastrar Cliente</button>
-                            <button onclick="home()" type="button"class="btn btn-danger" style=" width:150px;" href="#" >Voltar</button>
+                            <button onclick="home()" type="button" class="btn btn-danger" style=" width:150px;" href="#" >Voltar</button>
                           </div>
 
 
                       </form>
 
                 </div>
+
+        <script>
+
+        </script>
                 
 
-    
-      
-
-      
 
     <script src="/static/js/home.js"></script>
+    <script src="/static/js/cliente.js"></script>
 </body>
 </html>

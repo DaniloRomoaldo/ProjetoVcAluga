@@ -17,6 +17,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -155,12 +156,6 @@ public class LocacaoService {
         return  result;
     }
 
-    public List<LocacaoDTO> getALL(){
-        return repository
-                .findAll()
-                .stream()
-                .map(this::converter).collect(Collectors.toList());
-    }
 
     public String delete(int codLocacao){
         return "não é possível deletar um registro de locação";
@@ -174,6 +169,50 @@ public class LocacaoService {
             cod = random.nextInt(Integer.MAX_VALUE);
         }
         return cod;
+    }
+
+
+    public LocacaoDTO getCodLocacao(int codLocacao){
+        return converter(repository.findByCodLocacao(codLocacao));
+    }
+
+    public List<LocacaoDTO> getStatus(String status){
+        return repository
+                .findByStatus(status)
+                .stream()
+                .map(this::converter).collect(Collectors.toList());
+    }
+
+    public List<LocacaoDTO> getLocacaoCliente(String tipo, String valor){
+        if (Objects.equals(tipo, "cpfCnpj")){
+            return repository
+                    .findByCliente(repositoryCliente.findByCpfCnpj(valor))
+                    .stream()
+                    .map(this::converter).collect(Collectors.toList());
+
+        }else {
+            List<Cliente> clientes = new ArrayList<>();
+            List<Locacao> locacoesClientes = new ArrayList<>();
+            clientes = repositoryCliente.findByNomeContains(valor);
+
+            for (Cliente cliente: clientes){
+                locacoesClientes.addAll(repository.findByCliente(cliente));
+            }
+
+            return locacoesClientes.stream().map(this::converter).collect(Collectors.toList());
+
+//            return repository
+//                    .findByCliente(repositoryCliente.findByNomeContains(identificador))
+//                    .stream()
+//                    .map(this::converter).collect(Collectors.toList());
+        }
+    }
+
+    public List<LocacaoDTO> getALL(){
+        return repository
+                .findAll()
+                .stream()
+                .map(this::converter).collect(Collectors.toList());
     }
 
 

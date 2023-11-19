@@ -1,9 +1,19 @@
 url_locacoes = "http://localhost:8080/locacoes"
 
-function listLocacoesAtivas(){
+function listLocacoesAtivas(route, value){
     event.preventDefault();
     const typeGet = "locacoesAtivas";
-    get(typeGet, url_locacoes)
+    let url_busca;
+    if (route === "status"){
+        url_busca = url_locacoes+"?status="+value;
+    }else if (route === "cpfCnpj"){
+        url_busca = url_locacoes+"?cpfCnpj="+value;
+    }else if (route === "cod"){
+        url_busca = url_locacoes+"?codLocacao="+value;
+    }else {
+        url_busca = url_locacoes+"?nome="+value;
+    }
+    get(typeGet, url_busca)
 }
 
 function appendListLocacoesAtivas(data){
@@ -48,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function (){
 
         if (idSelecionado){
             url_finalizar = url_locacoes+"/"+idSelecionado  // roda do funcionário
-            body = {"status": "Finalizado"}
+            body = {"status": "FINALIZADO"}
 
             finalizarLocacao(url_finalizar, body);
 
@@ -68,8 +78,7 @@ async function finalizarLocacao(url_finalizar, body){
     try {
         const putLocacao = await fetch(url_finalizar, {
             method: "PUT",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(body)
+
         });
         if (putLocacao.ok){
             window.alert("Locação Finalizada!");

@@ -48,6 +48,7 @@ function home(){
 
 /*------------------------------------------FUNÇÕES GLOBAIS-------------------------------------------------------*/
 
+                        /*--------------------GET------------------------*/
 function get(typeGet,url){  // função GET padrão para todos os request de buscar lista de valores no banco
     fetch(url, {
         method: "GET",
@@ -83,6 +84,25 @@ function get(typeGet,url){  // função GET padrão para todos os request de bus
            // console.log(error)
         })
 
+}
+
+                            /*--------------------POST------------------------*/
+async function post(url, body){
+
+    try{
+        const response = await fetch(url,{
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(body)
+        });
+        if (response.ok){
+            console.log("REGISTRADO")
+        }else {
+            throw new Error("requisição erro "+ response.status);
+        }
+    } catch (error){
+        console.log(error);
+    }
 }
 
 

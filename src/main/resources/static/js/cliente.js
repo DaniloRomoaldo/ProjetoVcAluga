@@ -1,5 +1,7 @@
 url_cliente = "http://localhost:8080/cliente"
 
+/*-----------------------------(COLETAR CLIENTE) - (GET)-------------------------------------------------------*/
+
 function  listClients(route, value){
     event.preventDefault();
     const typeGet = "cliente";
@@ -64,3 +66,32 @@ document.addEventListener("DOMContentLoaded", function (){
         }
     })
 })
+
+/*-----------------------------(CADASTRAR CLIENTE) - (POST)-------------------------------------------------------*/
+
+function registerCliente(event){
+    var nome = document.getElementById("input-nome-cliente").value.toUpperCase();
+    var cpfCnpj = document.getElementById("input-cpf-cnpj-cliente").value;
+    var telefone = document.getElementById("input-telefone-cliente").value;
+    var tipo = document.querySelector('input[name="gridRadios"]:checked').value;
+    var fidelidade = document.getElementById("input-fidelidade-cliente").value;
+
+    if (tipo === "PESSOA FISICA" && cpfCnpj.length !== 11){
+        window.alert("Tipo de Cliente inválido, sugestão: PESSOA JURÍDICA")
+        event.preventDefault();
+    }else if (tipo === "PESSOA JURIDICA" && cpfCnpj.length !== 14){
+        window.alert("Tipo de Cliente inválido, sugestão: PESSOA FÍSICA")
+        event.preventDefault();
+    }else {
+        body={
+            "nome": nome,
+            "cpfCnpj": cpfCnpj,
+            "telefone": telefone,
+            "tipo": tipo,
+            "total_fidelidade": fidelidade
+        };
+        post(url_cliente, body);
+    }
+
+
+}
