@@ -64,6 +64,7 @@ public class LocacaoService {
         locacao.setEnd_retirada(repositoryFilial.findByNome(locacaoDTO.getFilialDTO().getNome()).getEndereco());
         locacao.setCat_veiculo(repositoryVeiculo.findByPlaca(locacaoDTO.getVeiculoDTO().getPlaca()).getCategoria());
         locacao.setCnh_vinculada(locacaoDTO.getMotoristaDTO().getCnh());
+        locacao.setCodLocacao(generateCod());
         repository.save(locacao);
         return  locacaoDTO;
 
@@ -74,7 +75,7 @@ public class LocacaoService {
 //        locacao.setStatus(locacaoDTO.getStatus());
 //        locacao.setPontos_fidelidade(locacaoDTO.getPontos_fidelidade());
 //        locacao.setContrato_ass(locacaoDTO.isContrato_ass());
-//        locacao.setCodLocacao(generateCod());
+
     }
 
     public LocacaoDTO atualizar(LocacaoDTO locacaoDTO, int codLocacao){ // preciso verificar cada campo se a atualização está passando nulo ou mudando o valor

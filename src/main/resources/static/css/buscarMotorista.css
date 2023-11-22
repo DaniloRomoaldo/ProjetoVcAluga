@@ -87,3 +87,12 @@ body{
 .final-space{
     height: 3vh;
 }
+.emitir-data-preven{
+    display: flex;
+    align-items: center;
+}
+
+#list-manutencao-veiculo{
+    margin-top: 20px;
+
+}

@@ -130,10 +130,10 @@
 
                   <div class="d-grid gap-2 d-md-flex justify-content-md-end4">
                     <button type="button" class="btn btn-secondary excluir-bnt" style=" width:150px;" >Excluir</button>
-                    <button type="submit" class="btn btn-warning manu-bnt" data-element="#log-veich-manu">Ordem de Manutenção</button>
-                    
-                  </div>
+                    <button type="submit" class="btn btn-warning manu-bnt ordem-manutencao-bnt" data-element="#log-veich-manu">Ordem de Manutenção</button>
+                      <!-- adicionar aqui uma lógica para mudar o status do veículo selecionado -->
 
+                  </div>
 
                   <script>
                       $(function() {
@@ -148,15 +148,27 @@
 
 
 
-                  <div id="log-veich-manu" style="display: none;"> 
+                  <div id="log-veich-manu" style="display: none;">
 
-                    <ul class="list-group list-itens-loc">
+                    <ul class="list-group list-itens-loc" id="list-manutencao-veiculo"> <!-- os elementos de ordem manutenção não estão sendo inseridos aqui-->
+                        <li>teste</li>
 
-                      <li class="list-group-item hist-car-log">histórico do carro</li>
                     </ul>
   
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end4">
-                      <button type="submit" class="btn btn-outline-success">Emitir Ordem</button>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end4 emitir-data-preven">
+                        <div class="mb-3 previsao-manutencao">
+                            <label for="data-previsao-manutencao" class="form-label">Previsão de entrega</label>
+                            <input type="date" class="form-control" id="data-previsao-manutencao">
+                        </div>
+
+                        <script>
+                            $(document).ready(function() {
+                                var now = new Date().toISOString().split('T')[0];
+                                $('#data-previsao-manutencao').attr('min', now);
+                            });
+                        </script>
+
+                      <button type="submit" class="btn btn-outline-success bnt-emitir-manutencao" onclick="emitirOrdem()">Emitir Ordem</button>
                       
                     </div>
           
@@ -178,6 +190,6 @@
 
 
     <script src="/static/js/home.js"></script>
-    <script src="/static/js/buscarVeiculo.js"></script>
+    <script src="/static/js/veiculo.js"></script>
 </body>
 </html>

@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/manutencao", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -26,11 +27,6 @@ public class ManutencaoController {
         return manutencaoService.atualizar(manutencaoDTO, placaVeiculo); // para criar o json eu preciso da placa do veículo dentro do VeiculoDTO
     }
 
-    @GetMapping
-    @ResponseBody
-    public List<ManutencaoDTO> getALL(){
-        return manutencaoService.getALL();
-    }
 
     @DeleteMapping("/{placaVeiculo}")
     @ResponseBody
@@ -38,7 +34,20 @@ public class ManutencaoController {
         return manutencaoService.delete(placaVeiculo);
     }
 
-//   public ManutencaoController(ManutencaoService manutencaoService) {
-//        this.manutencaoService = manutencaoService;
+
+    @GetMapping
+    @ResponseBody
+    public List<ManutencaoDTO> getManuntencao(
+            @RequestParam(value = "veiculoManutencaoId", required = false) UUID veiculoManutencaoId){
+        return manutencaoService.getManutencao(veiculoManutencaoId);
+    }
+
+
+
+//    @GetMapping
+//    @ResponseBody
+//    public List<ManutencaoDTO> getALL(){
+//        return manutencaoService.getALL();
 //    }
+
 }

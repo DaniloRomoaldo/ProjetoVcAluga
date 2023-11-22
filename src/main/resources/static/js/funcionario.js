@@ -1,4 +1,8 @@
 url_funcionario = "http://localhost:8080/funcionario"
+url_filial = "http://localhost:8080/filial"
+
+
+/*-----------------------------(COLETAR FUNCIONARIO) - (GET)-------------------------------------------------------*/
 
 function listFuncio(route, value){
     event.preventDefault();
@@ -55,4 +59,62 @@ document.addEventListener("DOMContentLoaded", function (){
             console.log("erro")
         }
     })
+
 })
+
+/*-----------------------------(CADASTRAR FUNCIONARIO) - (POST)-------------------------------------------------------*/
+
+document.addEventListener("DOMContentLoaded", function (){
+    var filial = document.getElementById("dropdown-filiais")
+    filial.addEventListener("change", function (){
+        filialSelect = filial.value;
+        console.log(filialSelect);
+    })
+
+})
+function registerFuncionario(){
+    var nome = document.getElementById("input-nome-funcio").value.toUpperCase();
+    var cpf = document.getElementById("input-cpf-funcio").value;
+    var funcao = document.querySelector('input[name="gridRadios"]:checked').value;
+
+    body={
+        "nome":nome,
+        "cpf":cpf,
+        "funcao":funcao,
+        "status": "ATIVO",
+        "filialDTO":{"nome":filialSelect}
+    }
+    console.log(body);
+    post(url_funcionario, body);
+}
+
+
+document.addEventListener("DOMContentLoaded", async function () {
+    const listaFiliais = document.getElementById("dropdown-filiais");
+
+        const filiais = await fetch(url_filial, {
+               method: "GET",
+               headers: {"Content-Type": "application/json"}
+           })
+               .then(response => {
+                       return response.json();
+               });
+
+    filiais.map(filial =>{
+        var item = criarOption(filial.nome);
+        item.textContent = filial.nome + " - " + filial.cnpj + " - " + filial.endereco;
+        listaFiliais.appendChild(item);
+    })
+
+}
+
+
+)
+
+
+
+function criarOption(value){
+    var optrionElement = document.createElement("option");
+    optrionElement.setAttribute("value",value);
+    return optrionElement;
+}
