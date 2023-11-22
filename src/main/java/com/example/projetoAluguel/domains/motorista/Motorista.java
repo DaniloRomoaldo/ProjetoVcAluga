@@ -26,6 +26,9 @@ public class Motorista {
     @Column(name = "dt_nascimento", nullable = false)
     private LocalDate dt_nascimento;
 
+    @Column(name = "status", nullable = false)
+    private String status;
+
 
     public UUID getId() {
         return id;
@@ -65,5 +68,13 @@ public class Motorista {
 
     public void setDt_nascimento(LocalDate dt_nascimento) {
         this.dt_nascimento = dt_nascimento;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

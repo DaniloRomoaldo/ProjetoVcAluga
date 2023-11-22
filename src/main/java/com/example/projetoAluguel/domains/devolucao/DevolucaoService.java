@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,8 +48,8 @@ public class DevolucaoService {
     private TransacaoRepository repositoryTransacao;
 
     public DevolucaoDTO criar(DevolucaoDTO devolucaoDTO) throws JsonProcessingException {
-        Motorista motorista = repositoryMotorista.findByCnh(devolucaoDTO.getMotoristaDTO().getCnh());
-        Cliente cliente = repositoryCliente.findByCpfCnpj(devolucaoDTO.getClienteDTO().getCpfCnpj());
+        Optional<Motorista> motorista = repositoryMotorista.findByCnh(devolucaoDTO.getMotoristaDTO().getCnh());
+        Optional<Cliente> cliente = repositoryCliente.findByCpfCnpj(devolucaoDTO.getClienteDTO().getCpfCnpj());
         Veiculo veiculo= repositoryVeiculo.findByPlaca(devolucaoDTO.getVeiculoDTO().getPlaca());
         Funcionario funcionario = repositoryFuncionario.findByCodFuncionario(devolucaoDTO.getFuncionarioDTO().getCod_funcionario());
         Locacao locacao = repositoryLocacao.findByCodLocacao(devolucaoDTO.getLocacaoDTO().getCodLocacao());
@@ -60,8 +61,8 @@ public class DevolucaoService {
         String devolucaoDTOJson = objectMapper.writeValueAsString(devolucaoDTO);
         Devolucao devolucao = objectMapper.readValue(devolucaoDTOJson, Devolucao.class);
 
-        devolucao.setMotorista(motorista);
-        devolucao.setCliente(cliente);
+        motorista.ifPresent(devolucao::setMotorista);
+        cliente.ifPresent(devolucao::setCliente);
         devolucao.setVeiculo(veiculo);
         devolucao.setFuncionario(funcionario);
         devolucao.setLocacao(locacao);
@@ -79,8 +80,9 @@ public class DevolucaoService {
         Devolucao devolucaoDatabase = repository.findByCodLocacao(codLocacao);
 
         if (devolucaoDatabase != null){
+            Optional<Motorista> motorista = repositoryMotorista.findByCnh(devolucaoDTO.getMotoristaDTO().getCnh());
             devolucaoDatabase.setLocacao(repositoryLocacao.findByCodLocacao(devolucaoDTO.getLocacaoDTO().getCodLocacao()));
-            devolucaoDatabase.setMotorista(repositoryMotorista.findByCnh(devolucaoDTO.getMotoristaDTO().getCnh()));
+            motorista.ifPresent(devolucaoDatabase::setMotorista);
             devolucaoDatabase.setVeiculo(repositoryVeiculo.findByPlaca(devolucaoDTO.getVeiculoDTO().getPlaca()));
 
             if(Objects.equals(devolucaoDTO.getMotoristaDTO().getCnh(), devolucaoDatabase.getMotorista().getCnh())){

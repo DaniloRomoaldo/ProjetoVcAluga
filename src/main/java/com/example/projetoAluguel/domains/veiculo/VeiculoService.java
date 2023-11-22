@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -40,8 +41,8 @@ public class VeiculoService {
 //        veiculo.setNome(veiculoDTO.getNome());
     }
 
-    public VeiculoDTO atualizar(VeiculoDTO veiculoDTO){
-        Veiculo veiculoDatabase = repository.findByPlaca(veiculoDTO.getPlaca());
+    public VeiculoDTO atualizar(VeiculoDTO veiculoDTO, String placa){
+        Veiculo veiculoDatabase = repository.findByPlaca(placa);
 
         if (veiculoDatabase != null){
 
@@ -70,6 +71,22 @@ public class VeiculoService {
         }
 
         return veiculoDTO;
+    }
+
+    private VeiculoDTO converterOptional(Optional<Veiculo> veiculoOptional){
+        VeiculoDTO result = new VeiculoDTO();
+        if (veiculoOptional.isPresent()) {
+            Veiculo veiculo = veiculoOptional.get();
+            result.setId(veiculo.getId());
+            result.getFilialDTO().setNome(veiculo.getFilial().getNome());
+            result.setStatus(veiculo.getStatus());
+            result.setCategoria(veiculo.getCategoria());
+            result.setKm_total(veiculo.getKm_total());
+            result.setPlaca(veiculo.getPlaca());
+            result.setNome(veiculo.getNome());
+        }
+
+        return result;
     }
 
     private VeiculoDTO converter(Veiculo veiculo){
@@ -104,11 +121,22 @@ public class VeiculoService {
         return converter(repository.findByPlaca(placa));
     }
 
+
+    public VeiculoDTO getVeiculoId(UUID veiculoId){
+        return converterOptional(repository.findById(veiculoId));
+    }
+
     public List<VeiculoDTO> getVeiculoStatus(String status){
         return repository.findByStatus(status)
                 .stream()
                 .map(this::converter).collect(Collectors.toList());
 
+    }
+
+    public List<VeiculoDTO> getVeiculosDisponiveis(String categoria){
+        return repository.findByCategoriaAndStatus(categoria, "DISPONIVEL")
+                .stream()
+                .map(this::converter).collect(Collectors.toList());
     }
 
     public  List<VeiculoDTO> getVeiculoCategoria(String categoria){

@@ -78,7 +78,8 @@ async function finalizarLocacao(url_finalizar, body){
     try {
         const putLocacao = await fetch(url_finalizar, {
             method: "PUT",
-
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(body)
         });
         if (putLocacao.ok){
             window.alert("Locação Finalizada!");

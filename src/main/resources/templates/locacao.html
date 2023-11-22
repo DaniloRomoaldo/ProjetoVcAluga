@@ -50,7 +50,7 @@
 
 
                 <!--Nova Locação-->
-                <form>
+                <form class="form" onsubmit="registerLocacao(event)">
                 <div class="container-locacao-register">
                     <h1>Nova Locação</h1>
                     
@@ -59,18 +59,18 @@
                       <div class="cliente">
 
                                 <div class="mb-3">
-                                  <label for="exampleFormControlInput1" class="form-label">Nome do Cliente</label>
-                                  <input type="email" class="form-control"  >
+                                  <label for="input-nome-cliente" class="form-label">Nome do Cliente</label>
+                                  <input type="text" required class="form-control" id="input-nome-cliente" >
                                 </div>
 
                                 <div class="mb-3">
-                                  <label for="exampleFormControlInput1" class="form-label">CPF ou CNPJ</label>
-                                  <input type="email" class="form-control"  >
+                                  <label for="input-cpfCnpj-cliente" class="form-label">CPF ou CNPJ</label>
+                                  <input type="text" required pattern="[0-9]{11}|[0-9]{14}" class="form-control" id="input-cpfCnpj-cliente" >
                                 </div>
 
                                 <div class="mb-3">
-                                  <label for="exampleFormControlInput1" class="form-label">Telefone</label>
-                                  <input type="email" class="form-control"  >
+                                  <label for="input-telefone-cliente" class="form-label">Telefone</label>
+                                  <input type="text" required pattern="[0-9]{11}" class="form-control" id="input-telefone-cliente" >
                                 </div>
                       </div>
 
@@ -79,27 +79,37 @@
                       <div class="motorista">
 
                         <div class="mb-3">
-                          <label for="exampleFormControlInput1" class="form-label">Nome do Motorista</label>
-                          <input type="email" class="form-control"  >
+                          <label for="input-nome-motorista" class="form-label">Nome do Motorista</label>
+                          <input type="text" required class="form-control" id="input-nome-motorista" >
                         </div>
 
                         <div class="lado_lado">
                           <div class="mb-3 left-cpf">
-                            <label for="exampleFormControlInput1" class="form-label">CPF</label>
-                            <input type="email" class="form-control"  >
+                            <label for="input-cpf-motorista" class="form-label">CPF</label>
+                            <input type="text" required pattern="[0-9]{11}" class="form-control" id="input-cpf-motorista" >
                           </div>
                           <div class="mb-3 right-cnh">
-                            <label for="exampleFormControlInput1" class="form-label">CNH</label>
-                            <input type="email" class="form-control"  >
+                            <label for="input-cnh-motorista" class="form-label">CNH</label>
+                            <input type="text" required pattern="[0-9]{11}" class="form-control" id="input-cnh-motorista" >
                           </div>
 
                         </div>
 
                         <div class="mb-3">
-                          <label for="exampleFormControlInput1" class="form-label">Data de Nascimento</label>
-                          <input type="date" class="form-control"  >
+                          <label for="data-nasc-motorista" class="form-label">Data de Nascimento</label>
+                          <input type="date" required class="form-control" id="data-nasc-motorista" >
                         
                         </div>
+
+                          <script>
+                              $(document).ready(function() {
+                                  var now = new Date();
+                                  //reduzir 25 anos, idade mínima
+                                  now.setFullYear(now.getFullYear() - 25);
+                                  var formattedDate = now.toISOString().split('T')[0];
+                                  $('#data-nasc-motorista').attr('max', formattedDate);
+                              });
+                          </script>
 
                     </div>
                     <!--      -->
@@ -116,19 +126,19 @@
                     
                         <div class="carousel-inner">
                             <div class="carousel-item active">
-                                <img src="/static/img/veiculos/hatch.png" class="img-fluid d-block w-100">
+                                <img src="/static/img/veiculos/hatch.png" class="img-fluid d-block w-100" alt="">
                                 <div class="carousel-caption d-none d-md-block">
                                   <p>HATCH</p>
                                 </div>
                             </div>
                             <div class="carousel-item">
-                                <img src="/static/img/veiculos/sedan.png" class="img-fluid d-block w-100">
+                                <img src="/static/img/veiculos/sedan.png" class="img-fluid d-block w-100" alt="">
                                 <div class="carousel-caption d-none d-md-block">
                                   <p>SEDAN</p>
                                 </div>
                             </div>
                             <div class="carousel-item">
-                                <img src="/static/img/veiculos/suv.png" class="img-fluid d-block w-100">
+                                <img src="/static/img/veiculos/suv.png" class="img-fluid d-block w-100" alt="">
                                 <div class="carousel-caption d-none d-md-block">
                                   <p>SUV</p>
                                 </div>
@@ -144,34 +154,7 @@
                             <span class="sr-only">Próximo</span>
                         </a>
                     </div>
-                    
-                    <script>
-                      $(document).ready(function () {
-                          // Inicialize o carrossel manualmente
-                          $('#carouselSite').carousel({
-                              interval: false  // Configura o intervalo como falso para desabilitar o deslizamento automático
-                          });
-                  
-                          // Controle manual de avançar e retroceder
-                          $('.carousel-control-next').click(function () {
-                              $('#carouselSite').carousel('next');
-                          });
-                  
-                          $('.carousel-control-prev').click(function () {
-                              $('#carouselSite').carousel('prev');
-                          });
-                  
-                          // Capturar evento de mudança de slide
-                          $('#carouselSite').on('slid.bs.carousel', function () {
-                              var activeSlide = $(this).find('.carousel-item.active .carousel-caption p').text();
-                              
-                              // Aqui, você pode usar a variável 'activeSlide' para identificar qual imagem está atualmente ativa.
-                              console.log(activeSlide);
-                              
-                              // Você pode enviar 'activeSlide' para a sua API ou fazer qualquer outra coisa que desejar.
-                          });
-                      });
-                  </script>
+
 
                   <div class="d-grid gap-2 d-md-flex justify-content-md-end3">
                     <button type="button" class="btn btn-warning" data-element="#return-objects-ocult">Verificar Disponibilidade</button>
@@ -184,33 +167,39 @@
                             $(el).toggle();
                           });
                         });
+
+                          $(document).ready(function() {
+                              // Criar uma nova data
+                              var now = new Date().toISOString().split('T')[0];
+                              var amanha = new Date();
+
+                              //devolução min é amanha
+                              amanha.setDate(amanha.getDate() + 1);
+                              var devolucao = amanha.toISOString().split('T')[0];
+
+                              $('#data-retirada').attr('min', now);
+                              $('#data-devolucao').attr('min', devolucao);
+                          });
                   </script>
 
 
                   <div class="return-objects" id="return-objects-ocult" style="display: none;">
 
-                    <ul class="list-group">
-                      <li class="list-group-item">
-                        <input class="form-check-input me-1" type="radio" name="listGroupRadio" value="" id="firstRadio" checked>
-                        <label class="form-check-label" for="firstRadio">adicionar elemento aqui dentro</label>
-                      </li>
+                    <ul class="list-group" id="list-itens-veih-disponi"> <!-- aqui será inserido os veículos disponíveis -->
+
                     </ul>
 
                   </div>
 
-
-
-
-
                  
                     <div class="date-entre">
                       <div class="mb-3 left-retirada">
-                        <label for="exampleFormControlInput1" class="form-label">RETIRADA</label>
-                        <input type="date" class="form-control"  >
+                        <label for="data-retirada" class="form-label">RETIRADA</label>
+                        <input type="date" required class="form-control" id="data-retirada" >
                       </div>
                       <div class="mb-3 right-devolucao">
-                        <label for="exampleFormControlInput1" class="form-label">DEVOLUÇÃO</label>
-                        <input type="date" class="form-control" id="exampleFormControlInput1" >
+                        <label for="data-devolucao" class="form-label">DEVOLUÇÃO</label>
+                        <input type="date" required class="form-control" id="data-devolucao" >
                       </div>
 
                     </div>
@@ -221,26 +210,26 @@
 
 
                               <div class="mb-3 left-valor">
-                                <label for="exampleFormControlInput1" class="form-label">VALOR</label>
+                                <label class="form-label">VALOR</label>
                                 <div class="card">
-                                  <div class="card-body">
-                                    R$ 650,00 exz
+                                  <div class="card-body" id="valor-locacao">
+                                    <!-- valor da locação aqui -->
                                   </div>
                                 </div>
                               </div>
                               
 
                               <div class="mb-3 right-pay">
-                                <fieldset class="row mb-3">
+                                <fieldset class="row mb-3" id="list-tipo-pagamento">
                                   <legend class="col-form-label col-sm-2 pt-01">Forma de Pagamento</legend>
                                   <div class="col-sm-10">
                                     <div class="form-check">
-                                      <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
-                                      <label class="form-check-label" for="gridRadios1">Crédito</label>
+                                      <input class="form-check-input" type="radio" name="grid-pagamento" id="gridRadios1" value="CREDITO" checked>
+                                      <label class="form-check-label" for="gridRadios1">CREDITO</label>
                                     </div>
                                     <div class="form-check">
-                                      <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                                      <label class="form-check-label" for="gridRadios2">Débito</label>
+                                      <input class="form-check-input" type="radio" name="grid-pagamento" id="gridRadios2" value="DEBITO">
+                                      <label class="form-check-label" for="gridRadios2">DEBITO</label>
                                     </div>
                               
                                     </div>
@@ -249,10 +238,10 @@
 
 
                                 <div class="form-check check-contract-div">
-                                  <label class="form-check-label check-contract-label" for="flexCheckDefault">
+                                  <label class="form-check-label check-contract-label" for="input-contrato">
                                     Termos de Contrato e serviço assinados pelo cliente
                                   </label>
-                                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                  <input class="form-check-input" type="checkbox" id="input-contrato">
                                   
                                 </div>
                                 
@@ -270,12 +259,73 @@
                       </div>
 
                     </div>
-                
-                    
-              
 
-                </div>
+                    <script>
+                        $(document).ready(function () {
+                            activeSlide = $('#carouselSite').find('.carousel-item.active .carousel-caption p').text();
+                            $('#carouselSite').carousel({
+                                interval: false  // desabilita a troca autmática
+                            });
 
+                            // Controle manual
+                            $('.carousel-control-next').click(function () {
+                                $('#carouselSite').carousel('next');
+                            });
+
+                            $('.carousel-control-prev').click(function () {
+                                $('#carouselSite').carousel('prev');
+                            });
+
+                            // Capturar evento de mudança de slide
+                            $('#carouselSite').on('slid.bs.carousel', function () {
+                                 activeSlide = $(this).find('.carousel-item.active .carousel-caption p').text();
+
+                                 //atualiza o valor da locação caso seja trocado o tipo
+                                updateValorLocacao();
+                                //console.log(activeSlide);
+
+                            });
+
+                            $('#data-retirada , #data-devolucao').on('change', updateValorLocacao);
+                        });
+
+                        function updateValorLocacao(){
+                            if ($('#data-retirada').val() && $('#data-devolucao').val()){
+                                var dataRetirada = new Date($('#data-retirada').val());
+                                var dataDevolucao = new Date($('#data-devolucao').val());
+
+                                //calcular a diferença de dias
+                                var diffMilliSeg = Math.abs(dataDevolucao - dataRetirada);
+                                var diffDias = Math.ceil(diffMilliSeg/(1000*60*60*24));
+
+                                // multiplando o valor da locação pela quantidade em dias
+                                var valorDaLocacao = valorLocacao(activeSlide, diffDias);
+                                // console.log(diffDias)
+                                // console.log(valorDaLocacao)
+
+                                $('#valor-locacao').text('R$ '+ valorDaLocacao.toFixed(2));
+                            }
+                        }
+
+
+                        function valorLocacao(veiculo, dias){
+                            var precoTipoVeiculo = {
+                                'HATCH': 80,
+                                'SEDAN':100,
+                                'SUV':120
+                            }
+
+                            var valorLocacao = precoTipoVeiculo[veiculo] || 0;
+                            return valorLocacao * dias;
+                        }
+
+                        $(function (){
+                            $(".btn-warning").click(function (vazio){
+                                vazio.preventDefault();
+                                listarVeiculosDisponiveis(activeSlide);
+                            })
+                        })
+                    </script>
                 
 
               </form>
@@ -286,5 +336,6 @@
       
 
     <script src="/static/js/home.js"></script>
+    <script src="/static/js/locacao.js"></script>
 </body>
 </html>

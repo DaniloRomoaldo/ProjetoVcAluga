@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,7 +25,7 @@ public class ManutencaoService {
 
 
     public ManutencaoDTO criar(ManutencaoDTO manutencaoDTO){
-        Funcionario funcionario = repositoryFuncionario.findByCodFuncionario(manutencaoDTO.getFuncionarioDTO().getCod_funcionario());
+        Funcionario funcionario = repositoryFuncionario.findByNome(manutencaoDTO.getFuncionarioDTO().getNome()); //!!!!#pegar o codFuncionario do cookie da sessão
         Veiculo veiculo = repositoryVeiculo.findByPlaca(manutencaoDTO.getVeiculoDTO().getPlaca()); //a tabela de veículo precisa ser refatorada, adicionar pelo menos a plcada do veículo
 
         Manutencao manutencao = new Manutencao();
@@ -60,6 +61,7 @@ public class ManutencaoService {
     private ManutencaoDTO converter(Manutencao manutencao){
         ManutencaoDTO result = new ManutencaoDTO();
         result.setId(manutencao.getId());
+        result.getVeiculoDTO().setNome(manutencao.getVeiculo().getNome());
         result.getVeiculoDTO().setStatus(manutencao.getVeiculo().getStatus());
         result.getVeiculoDTO().setCategoria(manutencao.getVeiculo().getCategoria());
         result.getVeiculoDTO().getFilialDTO().setNome(manutencao.getVeiculo().getFilial().getNome());
@@ -76,6 +78,13 @@ public class ManutencaoService {
         return result;
     }
 
+
+
+    public String delete(String placaVeiculo){
+        repository.deleteById(repository.findByPlaca(placaVeiculo).getId());
+        return "Registro de Manutenção Deletado";
+    }
+
     public List<ManutencaoDTO> getALL(){
         return repository
                 .findAll()
@@ -83,9 +92,13 @@ public class ManutencaoService {
                 .map(this::converter).collect(Collectors.toList());
     }
 
-    public String delete(String placaVeiculo){
-        repository.deleteById(repository.findByPlaca(placaVeiculo).getId());
-        return "Registro de Manutenção Deletado";
+    public List<ManutencaoDTO> getManutencao(UUID veiculoId){
+
+        return repository
+                .findByVeiculo(repositoryVeiculo.findById(veiculoId)) // primeiro busca a entidade referente ao id, depois envia a entidade para o repository
+                .stream()
+                .map(this::converter).collect(Collectors.toList()); // busca as manutenções referentes a entidade
+
     }
 
 }

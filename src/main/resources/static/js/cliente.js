@@ -1,5 +1,6 @@
 url_cliente = "http://localhost:8080/cliente"
 
+
 /*-----------------------------(COLETAR CLIENTE) - (GET)-------------------------------------------------------*/
 
 function  listClients(route, value){

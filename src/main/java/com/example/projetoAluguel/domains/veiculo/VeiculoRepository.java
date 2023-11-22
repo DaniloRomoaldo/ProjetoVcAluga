@@ -12,4 +12,6 @@ public interface VeiculoRepository extends JpaRepository<Veiculo, UUID> {
     Veiculo findByPlaca(String placa);
     List<Veiculo> findByStatus(String status);
     List<Veiculo> findByCategoria(String Categoria);
+
+    List<Veiculo> findByCategoriaAndStatus(String Categoria, String Status);
 }

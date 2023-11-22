@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 @RestController
@@ -40,10 +41,13 @@ public class FuncionarioController {
     @GetMapping
     @ResponseBody
     public List<FuncionarioDTO> getFuncionario(@RequestParam(value = "funcao", required = false) String funcao,
-                                               @RequestParam(value = "nome", required = false)String nome){
+                                               @RequestParam(value = "nome", required = false)String nome,
+                                               @RequestParam(value = "codFuncionario", required = false)int codFuncionario){
         if (funcao != null){
             return funcionarioService.getFuncao(funcao);
-        }else {
+        } else if (codFuncionario != 0) {
+            return Collections.singletonList(funcionarioService.getCodFuncionario(codFuncionario));
+        } else {
             return funcionarioService.getNome(nome);
         }
     }

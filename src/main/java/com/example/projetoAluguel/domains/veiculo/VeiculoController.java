@@ -24,8 +24,9 @@ public class VeiculoController {
 
     @PutMapping("/{veiculoPlaca}")
     @ResponseBody
-    public VeiculoDTO atualizar(@RequestBody VeiculoDTO veiculoDTO){
-        return veiculoService.atualizar(veiculoDTO);
+    public VeiculoDTO atualizar(@PathVariable("veiculoPlaca")String veiculoPlaca,
+            @RequestBody VeiculoDTO veiculoDTO){
+        return veiculoService.atualizar(veiculoDTO, veiculoPlaca);
     }
 
 
@@ -46,7 +47,9 @@ public class VeiculoController {
     public List<VeiculoDTO> getVeiculos(
             @RequestParam(value = "placa", required = false) String placa ,
             @RequestParam(value = "status", required = false) String status,
-            @RequestParam(value = "categoria", required = false)String categoria){
+            @RequestParam(value = "categoria", required = false)String categoria,
+            @RequestParam(value = "veiculoId", required = false)UUID veiculoId,
+            @RequestParam(value = "veiculoDisponivel", required = false)String veiculoDisponivel){
 
         if (placa != null){
             return Collections.singletonList(veiculoService.getVeiculoPlaca(placa));
@@ -54,6 +57,10 @@ public class VeiculoController {
             return veiculoService.getVeiculoStatus(status);
         } else if (categoria != null) {
             return veiculoService.getVeiculoCategoria(categoria);
+        } else if (veiculoId != null) {
+            return Collections.singletonList(veiculoService.getVeiculoId(veiculoId));
+        } else if (veiculoDisponivel != null) {
+            return veiculoService.getVeiculosDisponiveis(veiculoDisponivel);
         } else {
             return veiculoService.getALL();
         }

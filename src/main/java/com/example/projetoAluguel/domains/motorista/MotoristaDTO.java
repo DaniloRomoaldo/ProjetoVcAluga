@@ -14,6 +14,8 @@ public class MotoristaDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dt_nascimento;
 
+    private String status;
+
     public void setDt_nascimento(String dt_nascimento) { //método padrão que converte String do json em OffsetDateTime
 
         this.dt_nascimento = LocalDate.parse(dt_nascimento, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -60,5 +62,11 @@ public class MotoristaDTO {
         this.cnh = cnh;
     }
 
+    public String getStatus() {
+        return status;
+    }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

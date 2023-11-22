@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -35,31 +36,34 @@ public class ClienteService {
     }
 
     public ClienteDTO atualizar(ClienteDTO clienteDTO, String cpfCnpj){
-        Cliente clienteDatabase = repository.findByCpfCnpj(cpfCnpj);
+        Optional<Cliente> clienteDatabase = repository.findByCpfCnpj(cpfCnpj);
 
         if (clienteDatabase != null){
 
-            if ((!Objects.equals(clienteDatabase.getNome(), clienteDTO.getNome())) && (clienteDTO.getNome() != null)){
-                clienteDatabase.setNome(clienteDTO.getNome());
-            }
+            clienteDatabase.ifPresent(database -> {
+                        if (!Objects.equals(database.getNome(), clienteDTO.getNome()) && clienteDTO.getNome() != null) {
+                            database.setNome(clienteDTO.getNome());
+                        }
 
-            if ((!Objects.equals(clienteDatabase.getCpfCnpj(), clienteDTO.getCpfCnpj())) && (clienteDTO.getCpfCnpj() != null)){
-                clienteDatabase.setCpfCnpj(clienteDTO.getCpfCnpj());
-            }
+                        if ((!Objects.equals(database.getCpfCnpj(), clienteDTO.getCpfCnpj())) && (clienteDTO.getCpfCnpj() != null)) {
+                            database.setCpfCnpj(clienteDTO.getCpfCnpj());
+                        }
 
-            if ((!Objects.equals(clienteDatabase.getTipo(), clienteDTO.getTipo())) && (clienteDTO.getTipo() != null)){
-                clienteDatabase.setTipo(clienteDTO.getTipo());
-            }
+                        if ((!Objects.equals(database.getTipo(), clienteDTO.getTipo())) && (clienteDTO.getTipo() != null)) {
+                            database.setTipo(clienteDTO.getTipo());
+                        }
 
-            if ((!Objects.equals(clienteDatabase.getTelefone(), clienteDTO.getTelefone())) && (clienteDTO.getTelefone() != null)){
-                clienteDatabase.setTelefone(clienteDTO.getTelefone());
-            }
+                        if ((!Objects.equals(database.getTelefone(), clienteDTO.getTelefone())) && (clienteDTO.getTelefone() != null)) {
+                            database.setTelefone(clienteDTO.getTelefone());
+                        }
 
-            if ((clienteDatabase.getTotal_fidelidade() != clienteDTO.getTotal_fidelidade()) && (clienteDTO.getTotal_fidelidade() != 0)){
-                clienteDatabase.setTotal_fidelidade(clienteDTO.getTotal_fidelidade());
-            }
+                        if ((database.getTotal_fidelidade() != clienteDTO.getTotal_fidelidade()) && (clienteDTO.getTotal_fidelidade() != 0)) {
+                            database.setTotal_fidelidade(clienteDTO.getTotal_fidelidade());
+                        }
 
-            repository.save(clienteDatabase);
+                repository.save(database);
+            });
+
         }
 
 
@@ -75,6 +79,21 @@ public class ClienteService {
         result.setTelefone(cliente.getTelefone());
         result.setDt_cadastro(cliente.getDt_cadastro());
         result.setTotal_fidelidade(cliente.getTotal_fidelidade());
+        return result;
+    }
+
+    private ClienteDTO converterOptional(Optional<Cliente> cliente){
+        ClienteDTO result = new ClienteDTO();
+
+        cliente.ifPresent( converter -> {
+            result.setId(converter.getId());
+            result.setNome(converter.getNome());
+            result.setCpfCnpj(converter.getCpfCnpj());
+            result.setTipo(converter.getTipo());
+            result.setTelefone(converter.getTelefone());
+            result.setDt_cadastro(converter.getDt_cadastro());
+            result.setTotal_fidelidade(converter.getTotal_fidelidade());
+        });
         return result;
     }
 
@@ -94,7 +113,7 @@ public class ClienteService {
     }
 
     public ClienteDTO getRegistro(String cpfCnpj){
-        return converter(repository.findByCpfCnpj(cpfCnpj));
+        return converterOptional(repository.findByCpfCnpj(cpfCnpj));
     }
 
     public List<ClienteDTO> getTipo(String tipo){

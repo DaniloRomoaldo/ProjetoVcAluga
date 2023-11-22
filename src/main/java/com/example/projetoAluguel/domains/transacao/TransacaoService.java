@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -35,7 +36,7 @@ public class TransacaoService {
     public TransacaoDTO criar(TransacaoDTO transacaoDTO) throws JsonProcessingException {
         Filial filial = repositoryFilial.findByNome(transacaoDTO.getFilialDTO().getNome());
         Locacao locacao = repositoryLocacao.findByCodLocacao(transacaoDTO.getLocacaoDTO().getCodLocacao());
-        Cliente cliente = repositoryCliente.findByCpfCnpj(transacaoDTO.getClienteDTO().getCpfCnpj());
+        Optional<Cliente> cliente = repositoryCliente.findByCpfCnpj(transacaoDTO.getClienteDTO().getCpfCnpj());
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -45,7 +46,7 @@ public class TransacaoService {
 
         transacao.setFilial(filial);
         transacao.setLocacao(locacao);
-        transacao.setCliente(cliente);
+        cliente.ifPresent(transacao::setCliente);
         transacao.setNumNotaFiscal(generateNumFiscal());
         transacao.setCodTransacao(generateCod());
         repository.save(transacao);
@@ -60,9 +61,10 @@ public class TransacaoService {
     public TransacaoDTO atualizar(TransacaoDTO transacaoDTO, String codTransacao){ // precisa validar os campos de entrada
         Transacao transacaoDatabase = repository.findByCodTransacao(codTransacao);
         if (transacaoDatabase != null){
+            Optional<Cliente> cliente = repositoryCliente.findByCpfCnpj(transacaoDTO.getClienteDTO().getCpfCnpj());
             transacaoDatabase.setFilial(repositoryFilial.findByNome(transacaoDTO.getFilialDTO().getNome()));
             transacaoDatabase.setLocacao(repositoryLocacao.findByCodLocacao(transacaoDTO.getLocacaoDTO().getCodLocacao()));
-            transacaoDatabase.setCliente(repositoryCliente.findByCpfCnpj(transacaoDTO.getClienteDTO().getCpfCnpj()));
+            cliente.ifPresent(transacaoDatabase::setCliente);
 
             if ((!Objects.equals(transacaoDatabase.getStatus(), transacaoDTO.getStatus())) && (transacaoDTO.getStatus() != null)){
                 transacaoDatabase.setStatus(transacaoDTO.getStatus());

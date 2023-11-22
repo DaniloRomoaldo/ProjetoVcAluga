@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,7 @@ public class FuncionarioService {
         Funcionario funcionario = objectMapper.readValue(funcionarioDTOJson, Funcionario.class);
 
         funcionario.setFilial(filial);
-        funcionario.setCodFuncionario(funcionarioDTO.getCod_funcionario()); // precisa reconfigurar campos que tenham valor numérico
+        funcionario.setCodFuncionario(generateCod()); // envia para a função gerar um código
 
         repository.save(funcionario);
         return funcionarioDTO;
@@ -76,6 +77,14 @@ public class FuncionarioService {
 
         return funcionarioDTO;
     }
+    private int generateCod(){
+        Random random = new Random();
+        int cod = random.nextInt(Integer.MAX_VALUE);
+        while (repository.findByCodFuncionario(cod) != null){ // gera um código novo até que não exista retorno na busca do banco
+            cod = random.nextInt(Integer.MAX_VALUE);
+        }
+        return cod;
+    }
 
     private FuncionarioDTO converter(Funcionario funcionario){
         FuncionarioDTO result = new FuncionarioDTO();
@@ -115,6 +124,10 @@ public class FuncionarioService {
                 .findByNomeContains(nome)
                 .stream()
                 .map(this::converter).collect(Collectors.toList());
+    }
+
+    public FuncionarioDTO getCodFuncionario(int codFuncionario){
+        return converter(repository.findByCodFuncionario(codFuncionario));
     }
 
 }

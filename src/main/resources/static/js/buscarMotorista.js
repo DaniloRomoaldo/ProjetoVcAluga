@@ -23,7 +23,8 @@ function appendListMotorista(data){
         var item = criarLi();
         var inputElement = criarInput("listGroupRadio", motorista.id);
         var labelElement = criarLabel(motorista.id);
-        labelElement.textContent= motorista.nome + ", CPF: " + motorista.cpf + " - CNH: " + motorista.cnh + "Data de Nascimento: " + dataNascimento;
+        labelElement.textContent= motorista.nome + ", CPF: " + motorista.cpf + " - CNH: " + motorista.cnh
+            + "Data de Nascimento: " + dataNascimento+" - Status: "+motorista.status ;
 
         item.appendChild(inputElement);
         item.appendChild(labelElement);

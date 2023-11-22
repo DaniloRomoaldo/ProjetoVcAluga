@@ -62,7 +62,7 @@ function get(typeGet,url){  // função GET padrão para todos os request de bus
             }
         })
         .then(data =>{  // criar método para converter o data em elementos html e inserir no campo desejado
-            console.log("dados recebidos:", data)
+            //console.log("dados recebidos:", data)
 
             switch (typeGet){
                 case typeGet = "cliente":
@@ -75,6 +75,12 @@ function get(typeGet,url){  // função GET padrão para todos os request de bus
                     appendListVeiculo(data)
                 case typeGet = "locacoesAtivas":
                     appendListLocacoesAtivas(data)
+                case typeGet = "filiais":
+                    return data;
+                case typeGet = "manutencao":
+                    appendListManutencaoVeiculo(data)
+                case typeGet = "veiculoDisponivel":
+                    appendListVeiculosDisponiveis(data)
 
             }
 
@@ -133,6 +139,12 @@ function deleteRegister(url, event){
 
 
 /*-------------------------------------FUNÇÕES CRIAÇÃO DE DINAMICA DE ELEMENTOS-------------------------------------------*/
+function criarLiSimple(){ //
+    var listElement = document.createElement("li")
+    listElement.classList.add("list-group-item")
+
+    return listElement
+}
 
 function criarLabel(id){
 
@@ -176,3 +188,4 @@ function formatarTimestamp(timestamp, typeData){
     }
 
 }
+

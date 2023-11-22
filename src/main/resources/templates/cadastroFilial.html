@@ -28,7 +28,7 @@
             </div>
                 <!--Imagem do menu-->
             <div class="container-fluid">
-              <img src="/static/img/vcAluga.png" class="rounded-circle">
+              <img src="/static/img/vcAluga.png" class="rounded-circle" alt="">
             </div>
             <!--Lista do menu lateral-->
             <div class="list-group nav-list">
@@ -47,33 +47,33 @@
                 <div class="container-client-register">
                     <h1>Nova Filial</h1>
                     
-                    <form>
+                    <form onsubmit="registerFilial()">
 
                         <div class="row mb-3">
                           <label  class="col-sm-2 col-form-label">Nome</label>
                           <div class="col-sm-10">
-                            <input type="text" required class="form-control" >
+                              <label for="input-nome-filial"></label><input type="text" required class="form-control" id="input-nome-filial">
                           </div>
                         </div>
 
                         <div class="row mb-3">
                           <label  class="col-sm-2 col-form-label">CNPJ</label>
                           <div class="col-sm-10">
-                            <input type="text"required class="form-control" id="inputPassword3">
+                              <label for="input-cnpj-filial"></label><input type="text" required pattern="[0-9]{14}" class="form-control" id="input-cnpj-filial">
                           </div>
                         </div>
 
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label">Endereço</label>
                             <div class="col-sm-10">
-                              <input type="text" required class="form-control" id="inputEmail3">
+                                <label for="input-end-filial"></label><input type="text" required class="form-control" id="input-end-filial">
                             </div>
                           </div>
 
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end2">
                             <button type="submit" class="btn btn-success">Cadastrar Filial</button>
-                            <button onclick="home()" type="button"class="btn btn-danger" style=" width:150px;"  >Voltar</button>
+                            <button onclick="home()" type="button" class="btn btn-danger" style=" width:150px;"  >Voltar</button>
                           </div>
 
 
@@ -88,5 +88,6 @@
       
 
     <script src="/static/js/home.js"></script>
+    <script src="/static/js/filial.js"></script>
 </body>
 </html>
