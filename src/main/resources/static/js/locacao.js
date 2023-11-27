@@ -75,7 +75,7 @@ async function registerLocacao(event){
         console.error(error);
     })
 
-
+//console.log(clienteData)
     // console.log(JSON.stringify(clienteData))
     // console.log(clienteData[0].cpfCnpj)
 
