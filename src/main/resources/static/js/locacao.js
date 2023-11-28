@@ -38,6 +38,10 @@ async function registerLocacao(event){
     const listaVeiculoDisponiveis = document.getElementById('list-itens-veih-disponi'); //pega o elemento ul que contém a lista
     const inputs = listaVeiculoDisponiveis.querySelectorAll('input[type="radio"]'); // pega todos os elementos dentro da lista
 
+    // variaveis para controlar o registro da locação
+    let cli = false;
+    let mot = false;
+
     if (contratoAssi === null){
         alert("assinar contrato!")
         event.preventDefault();
@@ -83,54 +87,112 @@ async function registerLocacao(event){
 
 
 
-
-
 // -----------------Consultar se o cliente já existe e se as informações são dele
 
 // --------------------------- VALIDAÇÕES DO CLIENTE--------------------------
-    if ( clienteData[0].cpfCnpj == null){ // se for um novo cliente
-        alert("cliente novo!!!!!!!!!!!!!!!!!!")
-        bodyNovoCliente={
+    let bodyNovoCliente;
+    if (clienteData[0].cpfCnpj == null) { // se for um novo cliente
+        alert("Novo Cliente Cadastrado")
+        bodyNovoCliente = {
             "nome": nomeCliente,
             "cpfCnpj": cpfCnpjCliente,
             "telefone": telefoneCliente,
             "tipo": tipo,
             "total_fidelidade": fidelidade
         };
-        // post(url_cliente, bodyNovoCliente);
+        await post(url_cliente, bodyNovoCliente);
+        cli = true;
 
-    }else if ((clienteData[0].nome !== nomeCliente)){ // se o documento pertencer a outro cliente já registrado
-        alert("Documento pertencente a outro Cliente: "+ clienteData[0].nome )
+    } else if ((clienteData[0].nome !== nomeCliente)) { // se o documento pertencer a outro cliente já registrado
+        alert("Documento pertencente a outro Cliente: " + clienteData[0].nome)
         event.preventDefault(event);
 
-    }else {
+    }else{
+        cli = true;
+    }
         // -------------------- VALIDAÇÕES DO MOTORISTA
 
-        if (motoristaData[0].cnh == null){
-            bodyNovoMotorista={
-                "nome":nomeMotorista,
-                "cpf":cpfMotorista,
-                "cnh":cnhMotorista,
+        if (motoristaData[0].cnh == null) { // se for um novo motorista
+            alert("Motorista novo!")
+            let bodyNovoMotorista;
+            bodyNovoMotorista = {
+                "nome": nomeMotorista,
+                "cpf": cpfMotorista,
+                "cnh": cnhMotorista,
                 "dt_nascimento": dt_nascimento,
-                "status":"INDISPONIVEL"
+                "status": "DISPONIVEL"
             };
-            // post(url_motorista, bodyNovoMotorista);
-        }else if ((motoristaData[0].nome !== nomeMotorista)){
-            alert("CNH pertencente a outro Motorista: "+motoristaData[0].nome)
+            await post(url_motorista, bodyNovoMotorista);
+            mot = true;
+        } else if ((motoristaData[0].nome !== nomeMotorista)) {
+            alert("CNH pertencente a outro Motorista: " + motoristaData[0].nome)
             event.preventDefault(event);
-        }else if ((motoristaData[0].status !== "DISPONIVEL")){
+        } else if ((motoristaData[0].status !== "DISPONIVEL")) {
             alert("Motorista vinculado a uma locação ATIVA!")
             event.preventDefault();
+        }else{
+            mot = true;
         }
 
-    }
+
+        if (cli && mot && contratoAssi){
+            let bodyLocacao;
+            bodyLocacao = {
+                'clienteDTO':{'cpfCnpj':cpfCnpjCliente},
+                'motoristaDTO':{'cnh':cnhMotorista},
+                'veiculoDTO':{'placa':veiculoData[0].placa},
+                'funcionarioDTO':{'codFuncionario':123}, // precisa adicionar um campo de cod funcionario
+                'filialDTO':{'nome':'matriz'},//precisa adicionar a matriz atual, pode ser coletado no get do funcionario
+                'end_retirada':'matriz', //coletar informação acima
+                'end_devolucao':'Rua dos Bobos N° 0',
+                'categoria':activeSlide,
+                'cnh_vinculada': cnhMotorista,
+                'dt_inicio':dt_retirada,
+                'dt_fim':dt_devolucao,
+                'pontos_fidelidade':fidelidade,
+                'status':'ATIVA',
+                'contrato_ass':contratoAssi
+
+            }
+
+            await post(url_locacoes , bodyLocacao)
+
+            const url_status_veiculo = url_veiculo+"/"+veiculoData[0].placa
+            console.log(url_status_veiculo)
+            console.log(JSON.stringify(bodyLocacao))
+            let bodyStatus= {
+                "status":'INDISPONIVEL'
+            }
+            try{
+                const putAttStatus = await fetch(url_status_veiculo,{
+                    method: "PUT",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(bodyStatus)
+
+                });
+                if (putAttStatus.ok){
+                    console.log("veiculo reservado!")
+                }else {
+                    throw new Error("Requisição mal sucedida: "+ putAttStatus.status)
+
+                }
+            }catch (error){
+                console.error(error);
+            }
+
+        }else{
+            alert("não pode ser cadastrado")
+        }
+
+
 
 }
 
 
+
 function listarVeiculosDisponiveis(categoria){
     const typeGet = "veiculoDisponivel";
-    url_veiculoDisponivel = url_veiculo+"?veiculoDisponivel="+categoria;
+    let url_veiculoDisponivel = url_veiculo+"?veiculoDisponivel="+categoria;
 
     get(typeGet, url_veiculoDisponivel)
 
