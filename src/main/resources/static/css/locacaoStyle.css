@@ -182,6 +182,10 @@ h1{
         transform: scale(1.1);
 }
 
+#bnt-validar{
+    background-color: #ffc107;
+    color: black;
+}
 .final-space{
     height: 10vh;
 }

@@ -41,6 +41,8 @@ async function registerLocacao(event){
     // variaveis para controlar o registro da locação
     let cli = false;
     let mot = false;
+    let newMot = false;
+    let newCli = false;
 
     if (contratoAssi === null){
         alert("assinar contrato!")
@@ -79,12 +81,6 @@ async function registerLocacao(event){
         console.error(error);
     })
 
-//console.log(clienteData)
-    // console.log(JSON.stringify(clienteData))
-    // console.log(clienteData[0].cpfCnpj)
-
-
-
 
 
 // -----------------Consultar se o cliente já existe e se as informações são dele
@@ -92,15 +88,9 @@ async function registerLocacao(event){
 // --------------------------- VALIDAÇÕES DO CLIENTE--------------------------
     let bodyNovoCliente;
     if (clienteData[0].cpfCnpj == null) { // se for um novo cliente
-        alert("Novo Cliente Cadastrado")
-        bodyNovoCliente = {
-            "nome": nomeCliente,
-            "cpfCnpj": cpfCnpjCliente,
-            "telefone": telefoneCliente,
-            "tipo": tipo,
-            "total_fidelidade": fidelidade
-        };
-        await post(url_cliente, bodyNovoCliente);
+        alert("Cliente NÃO encontrado!")
+        window.location.href='http://localhost:8080/cadastrarCliente';
+
         cli = true;
 
     } else if ((clienteData[0].nome !== nomeCliente)) { // se o documento pertencer a outro cliente já registrado
@@ -113,17 +103,12 @@ async function registerLocacao(event){
         // -------------------- VALIDAÇÕES DO MOTORISTA
 
         if (motoristaData[0].cnh == null) { // se for um novo motorista
-            alert("Motorista novo!")
-            let bodyNovoMotorista;
-            bodyNovoMotorista = {
-                "nome": nomeMotorista,
-                "cpf": cpfMotorista,
-                "cnh": cnhMotorista,
-                "dt_nascimento": dt_nascimento,
-                "status": "DISPONIVEL"
-            };
-            await post(url_motorista, bodyNovoMotorista);
-            mot = true;
+            alert("Motorista Não encontrado! Cadastre-o")
+            window.location.href= 'http://localhost:8080/cadastrarMotorista';
+
+            event.preventDefault(event);
+
+           // mot = true;
         } else if ((motoristaData[0].nome !== nomeMotorista)) {
             alert("CNH pertencente a outro Motorista: " + motoristaData[0].nome)
             event.preventDefault(event);
@@ -135,54 +120,77 @@ async function registerLocacao(event){
         }
 
 
-        if (cli && mot && contratoAssi){
-            let bodyLocacao;
-            bodyLocacao = {
-                'clienteDTO':{'cpfCnpj':cpfCnpjCliente},
-                'motoristaDTO':{'cnh':cnhMotorista},
-                'veiculoDTO':{'placa':veiculoData[0].placa},
-                'funcionarioDTO':{'codFuncionario':123}, // precisa adicionar um campo de cod funcionario
-                'filialDTO':{'nome':'matriz'},//precisa adicionar a matriz atual, pode ser coletado no get do funcionario
-                'end_retirada':'matriz', //coletar informação acima
-                'end_devolucao':'Rua dos Bobos N° 0',
-                'categoria':activeSlide,
-                'cnh_vinculada': cnhMotorista,
-                'dt_inicio':dt_retirada,
-                'dt_fim':dt_devolucao,
-                'pontos_fidelidade':fidelidade,
-                'status':'ATIVA',
-                'contrato_ass':contratoAssi
 
-            }
+            if (cli && mot && contratoAssi) {
 
-            await post(url_locacoes , bodyLocacao)
-
-            const url_status_veiculo = url_veiculo+"/"+veiculoData[0].placa
-            console.log(url_status_veiculo)
-            console.log(JSON.stringify(bodyLocacao))
-            let bodyStatus= {
-                "status":'INDISPONIVEL'
-            }
-            try{
-                const putAttStatus = await fetch(url_status_veiculo,{
-                    method: "PUT",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify(bodyStatus)
-
-                });
-                if (putAttStatus.ok){
-                    console.log("veiculo reservado!")
-                }else {
-                    throw new Error("Requisição mal sucedida: "+ putAttStatus.status)
+                const bodyLocacao = {
+                    'clienteDTO':{'cpfCnpj':cpfCnpjCliente},
+                    'motoristaDTO':{'cnh':cnhMotorista},
+                    'veiculoDTO':{'placa':veiculoData[0].placa},
+                    'funcionarioDTO':{'codFuncionario':123}, // precisa adicionar um campo de cod funcionario
+                    'filialDTO':{'nome':'matriz'},//precisa adicionar a matriz atual, pode ser coletado no get do funcionario
+                    'end_retirada':'matriz', //coletar informação acima
+                    'end_devolucao':'Rua dos Bobos N° 0',
+                    'categoria':activeSlide,
+                    'cnh_vinculada': cnhMotorista,
+                    'dt_inicio':dt_retirada,
+                    'dt_fim':dt_devolucao,
+                    'pontos_fidelidade':fidelidade,
+                    'status':'ATIVA',
+                    'contrato_ass':contratoAssi
 
                 }
-            }catch (error){
-                console.error(error);
-            }
+                const bodyStatus = {
+                    "status":"INDISPONIVEL"
+                }
+                const bodyStatusMotorista = {
+                    "status":"INDISPONIVEL"
+                }
 
-        }else{
-            alert("não pode ser cadastrado")
-        }
+                const url_status_veiculo = url_veiculo+"/"+veiculoData[0].placa
+                const url_status_motorista = url_motorista+"/"+motoristaData[0].cnh
+
+                try {
+                    // post da locação feita
+                    const postLocacaoPromise = fetch(url_locacoes,{
+                        method:"POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify(bodyLocacao)
+                    });
+                    // put da alteração do veiculo
+                    const putStatusVeiculoPromise = fetch(url_status_veiculo,{
+                        method:"PUT",
+                        headers: {"Content-Type": "application/json"},
+                        body:JSON.stringify(bodyStatus)
+                    });
+                    const putStatusMotoristaPromise = fetch(url_status_motorista,{
+                        method:"PUT",
+                        headers: {"Content-Type": "application/json"},
+                        body:JSON.stringify(bodyStatusMotorista)
+                    });
+
+
+                         const [responsePost, responsePut, responsePutMotorista] = await Promise.all([postLocacaoPromise, putStatusVeiculoPromise, putStatusMotoristaPromise]);
+                        if (!responsePost.ok){
+                            throw new Error("Erro no post: " + responsePost.status);
+                        }
+                        if (!responsePut.ok){
+                            throw new Error("Erro no PUT: "+ responsePut.status);
+                        }
+                        if (!responsePutMotorista.ok){
+                            throw new Error("Erro no PUT: "+ responsePut.status);
+                        }
+
+
+
+                    console.log("olhar reserva");
+
+                } catch (error){
+                    console.error(error)
+                }
+
+
+            }
 
 
 

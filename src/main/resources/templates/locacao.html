@@ -41,6 +41,7 @@
                 <a href="http://localhost:8080/buscarVeiculo" class="list-group-item list-group-item-action list-group-item-secondary">Localizar Veículo</a>
                 <a href="http://localhost:8080/buscarCliente" class="list-group-item list-group-item-action list-group-item-secondary">Consultar Cliente</a>
                 <a href="http://localhost:8080/buscarMotorista" class="list-group-item list-group-item-action list-group-item-secondary">Consultar Motorista</a>
+                <a href="http://localhost:8080/cadastrarMotorista" class="list-group-item list-group-item-action list-group-item-secondary">Registrar Motorista</a>
                 <a href="http://localhost:8080/cadastrarFuncionario" class="list-group-item list-group-item-action list-group-item-secondary">Registrar Funcionário</a>
                 <a href="http://localhost:8080/buscarFuncionario" class="list-group-item list-group-item-action list-group-item-secondary">Pesquisar Funcionário</a>
                 <a href="http://localhost:8080/cadastrarFilial" class="list-group-item list-group-item-action list-group-item-secondary">Nova Filial</a>
@@ -239,7 +240,7 @@
 
                                 <div class="form-check check-contract-div">
                                   <label class="form-check-label check-contract-label" for="input-contrato">
-                                    Termos de Contrato e serviço assinados pelo cliente
+                                    Valide os dados ANTES de assinar o contrato!
                                   </label>
                                   <input class="form-check-input" type="checkbox" id="input-contrato">
                                   
@@ -247,7 +248,7 @@
                                 
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end4">
                                   <button onclick="home()" type="button"class="btn btn-danger" style=" width:150px;" href="#" >Voltar</button>
-                                  <button type="submit" class="btn btn-success">Finalizar Locação</button>
+                                  <button type="submit" class="btn btn-success" id="bnt-validar" onclick="transformarBnt()">Validar Dados</button>
                                   
                                 </div>
                 
@@ -288,11 +289,20 @@
 
                             $('#data-retirada , #data-devolucao').on('change', updateValorLocacao);
                         });
+                        function transformarBnt(){
+                            $('#bnt-validar').css('background-color', '#28a745', 'color','#ffffff').text('Cadastrar Locação')
+                        }
 
                         function updateValorLocacao(){
                             if ($('#data-retirada').val() && $('#data-devolucao').val()){
                                 var dataRetirada = new Date($('#data-retirada').val());
                                 var dataDevolucao = new Date($('#data-devolucao').val());
+
+                                if (dataDevolucao <= dataRetirada) {
+                                    alert("Devolução inválida.");
+                                    $('#data-devolucao').css('border', '2px solid red')
+                                    return; // Aborta a função se a validação falhar
+                                }
 
                                 //calcular a diferença de dias
                                 var diffMilliSeg = Math.abs(dataDevolucao - dataRetirada);
