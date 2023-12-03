@@ -18,8 +18,6 @@ public class LoginInterceptorAppConfig implements WebMvcConfigurer {
                 );
     }
 
-
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/css/**")

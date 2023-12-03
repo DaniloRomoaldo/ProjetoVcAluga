@@ -98,8 +98,6 @@ public class FuncionarioService {
         return result;
     }
 
-
-
     public  String delete(UUID funcionarioId){
         repository.deleteById(funcionarioId);
         return "Funcionário DELETADO!";

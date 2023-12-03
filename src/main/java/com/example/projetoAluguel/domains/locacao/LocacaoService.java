@@ -272,5 +272,4 @@ public class LocacaoService {
                 .map(this::converter).collect(Collectors.toList());
     }
 
-
 }
