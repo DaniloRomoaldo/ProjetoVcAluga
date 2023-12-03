@@ -33,7 +33,6 @@ public class LoginViewController {
     }
 
 
-
     @PostMapping()
     public String loginRequestForm(@ModelAttribute Login login, Model model, HttpServletResponse response) throws IOException {
         model.addAttribute("login", login);
