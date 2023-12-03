@@ -11,4 +11,6 @@ import java.util.UUID;
 public interface MotoristaRepository extends JpaRepository<Motorista, UUID> {
     Optional<Motorista> findByCnh(String cnhMotorista);
     List<Motorista> findByNomeContains(String nome);
+
+    List<Motorista> findByStatus(String status);
 }

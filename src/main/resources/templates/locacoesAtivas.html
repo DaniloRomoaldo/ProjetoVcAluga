@@ -36,6 +36,7 @@
             <!--Lista do menu lateral-->
             <div class="list-group nav-list">
                 <a href="http://localhost:8080/buscarVeiculo" class="list-group-item list-group-item-action list-group-item-secondary">Localizar Veículo</a>
+                <a href="http://localhost:8080/listaManutencao" class="list-group-item list-group-item-action list-group-item-secondary">LIsta de Manutenção</a>
                 <a href="http://localhost:8080/buscarCliente" class="list-group-item list-group-item-action list-group-item-secondary">Consultar Cliente</a>
                 <a href="http://localhost:8080/buscarMotorista" class="list-group-item list-group-item-action list-group-item-secondary">Consultar Motorista</a>
                 <a href="http://localhost:8080/cadastrarMotorista" class="list-group-item list-group-item-action list-group-item-secondary">Registrar Motorista</a>
@@ -66,13 +67,16 @@
                         if (inputVal.trim() !== "") {
                             var elem = $(this).data('element');
                             var valorPesquisa = inputVal.toUpperCase().replace(/\./g,"").replace(/\//g, "").replace(/-/g,"").replace(/Í/g,"I");
-                            var patternStatus = ["ATIVA", "FINALIZADA", "AGUARDANDO", "FINALIZADO"]
+                            var patternStatus = ["ATIVA", "FINALIZADA", "AGUARDANDO", "FINALIZADO", "ATIVAS"]
                             var patternCpf = /^[0-9]{11}$/;
                             var patternCnpj = /^[0-9]{14}$/;
 
                             if (patternStatus.includes(valorPesquisa)){
                                 if (valorPesquisa === "FINALIZADA"){
                                     valorPesquisa = "FINALIZADO";
+                                }
+                                if (valorPesquisa ==="ATIVAS"){
+                                    valorPesquisa = "ATIVA";
                                 }
                                 listLocacoesAtivas("status", valorPesquisa);
 
@@ -95,9 +99,16 @@
 
                             $(elem).toggle();
                         } else {
-                            // Adicione lógica para lidar com o caso em que o campo está vazio, se necessário
-                            console.log("Campo vazio, não exibindo a lista.");
-                            alert("Campo Vazio!")
+                            const confirmed = window.confirm("Retornar TODOS as Locações Ativas?");
+
+                            if (confirmed){
+                                var elem2 = $(this).data('element');
+                                valorPesquisa = "all"
+                                listLocacoesAtivas("all", valorPesquisa)
+                                $(elem2).toggle();
+                            }else {
+                                event.preventDefault();
+                            }
                         }
                     });
                 });

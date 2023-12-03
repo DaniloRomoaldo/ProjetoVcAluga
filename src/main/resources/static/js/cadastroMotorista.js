@@ -16,5 +16,7 @@ function cadastrarMotorista(){
 
         post(url_motorista, body);
 
+        window.alert("Motorista Cadastrado!")
+
         window.location.href = 'http://localhost:8080/locacao'
 }

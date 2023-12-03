@@ -1,5 +1,6 @@
 package com.example.projetoAluguel.domains.ordem_manutencao;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +17,8 @@ public class ManutencaoController {
 
     @PostMapping
     @ResponseBody
-    public ManutencaoDTO criar(@RequestBody ManutencaoDTO manutencaoDTO){
-        return manutencaoService.criar(manutencaoDTO); // para criar um json manutencao eu preciso da placa do veículo dentro do VeiculoDTO
+    public ManutencaoDTO criar(@RequestBody ManutencaoDTO manutencaoDTO, HttpServletRequest request){
+        return manutencaoService.criar(manutencaoDTO, request); // para criar um json manutencao eu preciso da placa do veículo dentro do VeiculoDTO
     }
 
     @PutMapping("/{placaVeiculo}")

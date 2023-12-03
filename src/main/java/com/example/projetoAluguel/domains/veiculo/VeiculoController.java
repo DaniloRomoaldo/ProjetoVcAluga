@@ -49,7 +49,8 @@ public class VeiculoController {
             @RequestParam(value = "status", required = false) String status,
             @RequestParam(value = "categoria", required = false)String categoria,
             @RequestParam(value = "veiculoId", required = false)UUID veiculoId,
-            @RequestParam(value = "veiculoDisponivel", required = false)String veiculoDisponivel){
+            @RequestParam(value = "veiculoDisponivel", required = false)String veiculoDisponivel,
+            @RequestParam(value = "all", required = false)String all){
 
         if (placa != null){
             return Collections.singletonList(veiculoService.getVeiculoPlaca(placa));
@@ -61,6 +62,8 @@ public class VeiculoController {
             return Collections.singletonList(veiculoService.getVeiculoId(veiculoId));
         } else if (veiculoDisponivel != null) {
             return veiculoService.getVeiculosDisponiveis(veiculoDisponivel);
+        } else if (all != null) {
+            return veiculoService.getALL();
         } else {
             return veiculoService.getALL();
         }

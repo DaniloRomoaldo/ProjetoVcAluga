@@ -42,11 +42,17 @@ public class MotoristaController {
     @GetMapping
     @ResponseBody
     public List<MotoristaDTO> getMotorista(@RequestParam(value = "cnh", required = false)String cnh,
-                                           @RequestParam(value = "nome", required = false)String nome){
+                                           @RequestParam(value = "nome", required = false)String nome,
+                                           @RequestParam(value = "all", required = false)String all,
+                                           @RequestParam(value = "status", required = false)String status){
 
         if (cnh != null){
             return Collections.singletonList(motoristaService.getCnh(cnh));
-        }else {
+        } else if (all != null) {
+            return motoristaService.getALL();
+        } else if (status != null) {
+            return motoristaService.getMotoristaStatus(status);
+        } else {
             return motoristaService.getMotorista(nome);
         }
 

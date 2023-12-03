@@ -44,12 +44,15 @@ public class ClienteController {
     public List<ClienteDTO> getVeiculos(
             @RequestParam(value = "registro", required = false)String registro,
             @RequestParam(value = "nome", required = false)String nome,
-            @RequestParam(value = "tipo", required = false)String tipo){
+            @RequestParam(value = "tipo", required = false)String tipo,
+            @RequestParam(value = "all", required = false)String all){
 
         if (registro != null){
             return Collections.singletonList(clienteService.getRegistro(registro));
         } else if (tipo != null) {
             return clienteService.getTipo(tipo);
+        } else if (all != null) {
+            return clienteService.getALL();
         } else {
             return clienteService.getNome(nome);
         }

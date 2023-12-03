@@ -10,10 +10,12 @@ import com.example.projetoAluguel.domains.motorista.Motorista;
 import com.example.projetoAluguel.domains.motorista.MotoristaRepository;
 import com.example.projetoAluguel.domains.veiculo.Veiculo;
 import com.example.projetoAluguel.domains.veiculo.VeiculoRepository;
+import com.example.projetoAluguel.security.cookie.CookieService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,12 +42,13 @@ public class LocacaoService {
     @Autowired
     private FilialRepository repositoryFilial;
 
-    public LocacaoDTO criar(LocacaoDTO locacaoDTO) throws JsonProcessingException {
+    public LocacaoDTO criar(LocacaoDTO locacaoDTO, HttpServletRequest request) throws JsonProcessingException { // precisaria passar um httprequest contendo o cookie para coletar
         Optional<Motorista> motorista = repositoryMotrista.findByCnh(locacaoDTO.getMotoristaDTO().getCnh());
         Optional<Cliente> cliente = repositoryCliente.findByCpfCnpj(locacaoDTO.getClienteDTO().getCpfCnpj());
         Veiculo veiculo = repositoryVeiculo.findByPlaca(locacaoDTO.getVeiculoDTO().getPlaca());
-        Funcionario funcionario = repositoryFuncionario.findByCodFuncionario(locacaoDTO.getFuncionarioDTO().getCod_funcionario());
-        Filial filial = repositoryFilial.findByNome(locacaoDTO.getFilialDTO().getNome());
+        //Funcionario funcionario = repositoryFuncionario.findByCodFuncionario(locacaoDTO.getFuncionarioDTO().getCod_funcionario());
+        Optional<Funcionario> funcionario = repositoryFuncionario.findById(UUID.fromString(CookieService.getCookie(request, "funcionarioId"))); // tentativa de coletar pelo cookie os valores
+        Filial filial = repositoryFilial.findByNome(CookieService.getCookie(request, "filialAtual"));
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -56,14 +59,15 @@ public class LocacaoService {
         motorista.ifPresent(locacao::setMotorista);
         cliente.ifPresent(locacao::setCliente);
         locacao.setVeiculo(veiculo);
-        locacao.setFuncionario(funcionario);
+        funcionario.ifPresent(locacao::setFuncionario);
         locacao.setFilial(filial);
-        locacao.setEnd_retirada(repositoryFilial.findByNome(locacaoDTO.getFilialDTO().getNome()).getEndereco());
+        locacao.setEnd_retirada(filial.getEndereco());
+        locacao.setEnd_devolucao(filial.getEndereco());
         locacao.setCat_veiculo(repositoryVeiculo.findByPlaca(locacaoDTO.getVeiculoDTO().getPlaca()).getCategoria());
         locacao.setCnh_vinculada(locacaoDTO.getMotoristaDTO().getCnh());
         locacao.setCodLocacao(generateCod());
         repository.save(locacao);
-        return  locacaoDTO;
+        return locacaoDTO;
 
 //        locacao.setDt_pedido(locacaoDTO.getDt_pedido());
 //        locacao.setDt_inicio(locacaoDTO.getDt_inicio());
@@ -75,46 +79,47 @@ public class LocacaoService {
 
     }
 
-    public LocacaoDTO atualizar(LocacaoDTO locacaoDTO, int codLocacao){ // preciso verificar cada campo se a atualização está passando nulo ou mudando o valor
-        Locacao locacaoDatabase = repository.findByCodLocacao(codLocacao);
-        if (locacaoDatabase != null){
-            if(locacaoDTO.getVeiculoDTO().getPlaca() != null){ // Atualizar informações do veículo
-                locacaoDatabase.setVeiculo(repositoryVeiculo.findByPlaca(locacaoDTO.getVeiculoDTO().getPlaca()));
-                locacaoDatabase.setCat_veiculo(repositoryVeiculo.findByPlaca(locacaoDTO.getVeiculoDTO().getPlaca()).getCategoria());
-                locacaoDatabase.setPontos_fidelidade(locacaoDTO.getPontos_fidelidade());
-                if(!Objects.equals(locacaoDatabase.getEnd_retirada(), repositoryVeiculo.findByPlaca(locacaoDTO.getVeiculoDTO().getPlaca()).getFilial().getEndereco())){
-                    locacaoDatabase.setEnd_retirada(repositoryVeiculo.findByPlaca(locacaoDTO.getVeiculoDTO().getPlaca()).getFilial().getEndereco());
+    public LocacaoDTO atualizar(LocacaoDTO locacaoDTO, UUID locacaoId) { // preciso verificar cada campo se a atualização está passando nulo ou mudando o valor
+        Optional<Locacao> locacaoDatabase = repository.findById(locacaoId);
+
+
+        locacaoDatabase.ifPresent(database -> {
+            if (locacaoDTO.getVeiculoDTO().getPlaca() != null) { // Atualizar informações do veículo
+                database.setVeiculo(repositoryVeiculo.findByPlaca(locacaoDTO.getVeiculoDTO().getPlaca()));
+                database.setCat_veiculo(repositoryVeiculo.findByPlaca(locacaoDTO.getVeiculoDTO().getPlaca()).getCategoria());
+                database.setPontos_fidelidade(locacaoDTO.getPontos_fidelidade());
+                if (!Objects.equals(database.getEnd_retirada(), repositoryVeiculo.findByPlaca(locacaoDTO.getVeiculoDTO().getPlaca()).getFilial().getEndereco())) {
+                    database.setEnd_retirada(repositoryVeiculo.findByPlaca(locacaoDTO.getVeiculoDTO().getPlaca()).getFilial().getEndereco());
                 }
 
             }
-            if (locacaoDTO.getMotoristaDTO().getCnh() != null){
+            if (locacaoDTO.getMotoristaDTO().getCnh() != null) {
                 Optional<Motorista> motorista = repositoryMotrista.findByCnh(locacaoDTO.getMotoristaDTO().getCnh());
-                motorista.ifPresent(locacaoDatabase::setMotorista);
-                locacaoDatabase.setCnh_vinculada(locacaoDTO.getMotoristaDTO().getCnh());
+                motorista.ifPresent(database::setMotorista);
+                database.setCnh_vinculada(locacaoDTO.getMotoristaDTO().getCnh());
             }
 
-            if((locacaoDatabase.getDt_inicio() != locacaoDTO.getDt_inicio()) && (null != locacaoDTO.getDt_inicio())){
-                locacaoDatabase.setDt_inicio(locacaoDTO.getDt_inicio());
+            if ((database.getDt_inicio() != locacaoDTO.getDt_inicio()) && (null != locacaoDTO.getDt_inicio())) {
+                database.setDt_inicio(locacaoDTO.getDt_inicio());
             }
-            if((locacaoDatabase.getDt_fim() != locacaoDTO.getDt_fim()) && (locacaoDTO.getDt_fim() != null) ){
-                locacaoDatabase.setDt_fim(locacaoDTO.getDt_fim());
+            if ((database.getDt_fim() != locacaoDTO.getDt_fim()) && (locacaoDTO.getDt_fim() != null)) {
+                database.setDt_fim(locacaoDTO.getDt_fim());
             }
-            if ((!Objects.equals(locacaoDatabase.getEnd_devolucao(), locacaoDTO.getEnd_devolucao())) && (locacaoDTO.getEnd_devolucao() != null)){
-                locacaoDatabase.setEnd_devolucao(locacaoDTO.getEnd_devolucao());
+            if ((!Objects.equals(database.getEnd_devolucao(), locacaoDTO.getEnd_devolucao())) && (locacaoDTO.getEnd_devolucao() != null)) {
+                database.setEnd_devolucao(locacaoDTO.getEnd_devolucao());
             }
-            if((!Objects.equals(locacaoDatabase.getStatus(), locacaoDTO.getStatus())) && (locacaoDTO.getStatus() != null)){
-                locacaoDatabase.setStatus(locacaoDTO.getStatus());
+            if ((!Objects.equals(database.getStatus(), locacaoDTO.getStatus())) && (locacaoDTO.getStatus() != null)) {
+                database.setStatus(locacaoDTO.getStatus());
             }
-            if(locacaoDTO.isContrato_ass()){
-                locacaoDatabase.setContrato_ass(locacaoDTO.isContrato_ass());
+            if (locacaoDTO.isContrato_ass()) {
+                database.setContrato_ass(locacaoDTO.isContrato_ass());
             }
-            repository.save(locacaoDatabase);
-            return locacaoDTO;
-        }else{
-            return locacaoDTO;
-        }
+            repository.save(database);
+        });
+        return locacaoDTO;
 
     }
+
 
     private LocacaoDTO converter(Locacao locacao){
         LocacaoDTO result = new LocacaoDTO();
@@ -133,6 +138,7 @@ public class LocacaoService {
 
         result.getVeiculoDTO().setCategoria(locacao.getVeiculo().getCategoria());
         result.getVeiculoDTO().setPlaca(locacao.getVeiculo().getPlaca());
+        result.getVeiculoDTO().setNome(locacao.getVeiculo().getNome());
 
         result.getFuncionarioDTO().setNome(locacao.getFuncionario().getNome());
         result.getFuncionarioDTO().setFuncao(locacao.getFuncionario().getFuncao());
@@ -158,44 +164,48 @@ public class LocacaoService {
     private LocacaoDTO converterOptional(Optional<Locacao> locacao){
         LocacaoDTO result = new LocacaoDTO();
 
-        locacao.ifPresent(locacao1 -> {
-            result.setId(locacao1.getId());
-            result.getMotoristaDTO().setNome(locacao1.getMotorista().getNome());
-            result.getMotoristaDTO().setCnh(locacao1.getMotorista().getCnh());
-            result.getMotoristaDTO().setDt_nascimento(locacao1.getMotorista().getDt_nascimento().toString());
-            result.getMotoristaDTO().setCpf(locacao1.getMotorista().getCpf());
+        locacao.ifPresent( converter ->{
 
-            result.getClienteDTO().setNome(locacao1.getCliente().getNome());
-            result.getClienteDTO().setCpfCnpj(locacao1.getCliente().getCpfCnpj());
-            result.getClienteDTO().setTelefone(locacao1.getCliente().getTelefone());
-            result.getClienteDTO().setTipo(locacao1.getCliente().getTipo());
-            result.getClienteDTO().setTotal_fidelidade(locacao1.getCliente().getTotal_fidelidade());
+            result.setId(converter.getId());
+            result.getMotoristaDTO().setNome(converter.getMotorista().getNome());
+            result.getMotoristaDTO().setCnh(converter.getMotorista().getCnh());
+            result.getMotoristaDTO().setDt_nascimento(converter.getMotorista().getDt_nascimento().toString());
+            result.getMotoristaDTO().setCpf(converter.getMotorista().getCpf());
 
-            result.getVeiculoDTO().setCategoria(locacao1.getVeiculo().getCategoria());
-            result.getVeiculoDTO().setPlaca(locacao1.getVeiculo().getPlaca());
+            result.getClienteDTO().setNome(converter.getCliente().getNome());
+            result.getClienteDTO().setCpfCnpj(converter.getCliente().getCpfCnpj());
+            result.getClienteDTO().setTelefone(converter.getCliente().getTelefone());
+            result.getClienteDTO().setTipo(converter.getCliente().getTipo());
+            result.getClienteDTO().setTotal_fidelidade(converter.getCliente().getTotal_fidelidade());
 
-            result.getFuncionarioDTO().setNome(locacao1.getFuncionario().getNome());
-            result.getFuncionarioDTO().setFuncao(locacao1.getFuncionario().getFuncao());
+            result.getVeiculoDTO().setCategoria(converter.getVeiculo().getCategoria());
+            result.getVeiculoDTO().setPlaca(converter.getVeiculo().getPlaca());
+            result.getVeiculoDTO().setNome(converter.getVeiculo().getNome());
 
-            result.getFilialDTO().setNome(locacao1.getFilial().getNome());
-            result.getFilialDTO().setCnpj(locacao1.getFilial().getCnpj());
-            result.getFilialDTO().setEndereco(locacao1.getFilial().getEndereco());
 
-            result.setCodLocacao(locacao1.getCodLocacao());
-            result.setCat_veiculo(locacao1.getCat_veiculo());
-            result.setCnh_vinculada(locacao1.getCnh_vinculada());
-            result.setDt_pedido(locacao1.getDt_pedido());
-            result.setDt_inicio(locacao1.getDt_inicio());
-            result.setDt_fim(locacao1.getDt_fim());
-            result.setEnd_retirada(locacao1.getEnd_retirada());
-            result.setEnd_devolucao(locacao1.getEnd_devolucao());
-            result.setStatus(locacao1.getStatus());
-            result.setPontos_fidelidade(locacao1.getPontos_fidelidade());
-            result.setContrato_ass(locacao1.isContrato_ass());
+            result.getFuncionarioDTO().setNome(converter.getFuncionario().getNome());
+            result.getFuncionarioDTO().setFuncao(converter.getFuncionario().getFuncao());
+
+            result.getFilialDTO().setNome(converter.getFilial().getNome());
+            result.getFilialDTO().setCnpj(converter.getFilial().getCnpj());
+            result.getFilialDTO().setEndereco(converter.getFilial().getEndereco());
+
+            result.setCodLocacao(converter.getCodLocacao());
+            result.setCat_veiculo(converter.getCat_veiculo());
+            result.setCnh_vinculada(converter.getCnh_vinculada());
+            result.setDt_pedido(converter.getDt_pedido());
+            result.setDt_inicio(converter.getDt_inicio());
+            result.setDt_fim(converter.getDt_fim());
+            result.setEnd_retirada(converter.getEnd_retirada());
+            result.setEnd_devolucao(converter.getEnd_devolucao());
+            result.setStatus(converter.getStatus());
+            result.setPontos_fidelidade(converter.getPontos_fidelidade());
+            result.setContrato_ass(converter.isContrato_ass());
 
         });
         return  result;
     }
+
 
 
     public String delete(int codLocacao){
@@ -216,6 +226,8 @@ public class LocacaoService {
     public LocacaoDTO getCodLocacao(int codLocacao){
         return converter(repository.findByCodLocacao(codLocacao));
     }
+
+    public LocacaoDTO getLocacaoId(UUID locacaoId){return converterOptional(repository.findById(locacaoId));}
 
     public List<LocacaoDTO> getStatus(String status){
         return repository

@@ -76,6 +76,8 @@ async function registerLocacao(event){
            veiculoData = values[1];
            motoristaData = values[2];
 
+           console.log(values);
+
         });
     }).catch(error => {
         console.error(error);
@@ -87,6 +89,7 @@ async function registerLocacao(event){
 
 // --------------------------- VALIDAÇÕES DO CLIENTE--------------------------
     let bodyNovoCliente;
+    console.log(clienteData);
     if (clienteData[0].cpfCnpj == null) { // se for um novo cliente
         alert("Cliente NÃO encontrado!")
         window.location.href='http://localhost:8080/cadastrarCliente';
@@ -127,10 +130,6 @@ async function registerLocacao(event){
                     'clienteDTO':{'cpfCnpj':cpfCnpjCliente},
                     'motoristaDTO':{'cnh':cnhMotorista},
                     'veiculoDTO':{'placa':veiculoData[0].placa},
-                    'funcionarioDTO':{'codFuncionario':123}, // precisa adicionar um campo de cod funcionario
-                    'filialDTO':{'nome':'matriz'},//precisa adicionar a matriz atual, pode ser coletado no get do funcionario
-                    'end_retirada':'matriz', //coletar informação acima
-                    'end_devolucao':'Rua dos Bobos N° 0',
                     'categoria':activeSlide,
                     'cnh_vinculada': cnhMotorista,
                     'dt_inicio':dt_retirada,
@@ -181,10 +180,7 @@ async function registerLocacao(event){
                             throw new Error("Erro no PUT: "+ responsePut.status);
                         }
 
-
-
-                    console.log("olhar reserva");
-
+                        alert("Locação realizada com sucesso!")
                 } catch (error){
                     console.error(error)
                 }

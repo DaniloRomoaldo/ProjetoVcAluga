@@ -36,6 +36,7 @@
             <!--Lista do menu lateral-->
             <div class="list-group nav-list">
                 <a href="http://localhost:8080/buscarVeiculo" class="list-group-item list-group-item-action list-group-item-secondary">Localizar Veículo</a>
+                <a href="http://localhost:8080/listaManutencao" class="list-group-item list-group-item-action list-group-item-secondary">LIsta de Manutenção</a>
                 <a href="http://localhost:8080/buscarCliente" class="list-group-item list-group-item-action list-group-item-secondary">Consultar Cliente</a>
                 <a href="http://localhost:8080/buscarMotorista" class="list-group-item list-group-item-action list-group-item-secondary">Consultar Motorista</a>
                 <a href="http://localhost:8080/cadastrarMotorista" class="list-group-item list-group-item-action list-group-item-secondary">Registrar Motorista</a>
@@ -50,7 +51,7 @@
         <div class="container-seach-locacoes">
 
             <div class="input-group mb-3 find-loc">
-                <input type="text" class="form-control" placeholder="Buscar Motorista por: CNH ou Nome"  aria-describedby="basic-addon2">
+                <input type="text" class="form-control" placeholder="Buscar Motorista por: CNH, Nome ou Disponibilidade"  aria-describedby="basic-addon2">
                 <div class="input-group-append">
                   <button class="btn btn-outline-success" type="button" data-element="#return-list-active-loc" >Buscar</button>
                 </div>
@@ -67,19 +68,37 @@
                             var elem = $(this).data('element');
                             var valorPesquisa = inputVal.toUpperCase();
                             var patternCNH = /^[0-9]{11}$/;
+                        var patternStatus = ["DISPONIVEL", "INDISPONIVEL", "DISPONÍVEL", "INDISPONÍVEL"]
 
                             if (patternCNH.test(valorPesquisa)){
                                 listMotorista("CNH", valorPesquisa);
                                 $(elem).toggle();
+                            }else if (patternStatus.includes(valorPesquisa)){
+                                if (valorPesquisa === "DISPONÍVEL"){
+                                    valorPesquisa = "DISPONIVEL";
+                                }
+                                if (valorPesquisa === "INDISPONÍVEL"){
+                                    valorPesquisa = "INDISPONIVEL"
+                                }
+                                listMotorista("status", valorPesquisa)
+                                $(elem).toggle();
+
                             }else{
                                 listMotorista("nome", valorPesquisa);
                                 $(elem).toggle();
 
                             }
                         } else {
-                            // Adicione lógica para lidar com o caso em que o campo está vazio, se necessário
-                            console.log("Campo vazio, não exibindo a lista.");
-                            alert("Campo Vazio!")
+                            const confirmed = window.confirm("Retornar TODOS os Motoristas?");
+
+                            if (confirmed){
+                                var elem2 = $(this).data('element');
+                                valorPesquisa = "all"
+                                listMotorista("all", valorPesquisa)
+                                $(elem2).toggle();
+                            }else {
+                                event.preventDefault();
+                            }
                         }
                     });
                 });

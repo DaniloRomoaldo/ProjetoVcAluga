@@ -16,6 +16,8 @@ function listVeiculos(route, value){
         url_busca = url_veiculo+"?status="+value;
     }else if (route === "cat"){
         url_busca = url_veiculo+"?categoria="+value;
+    }else if (route === "all"){
+        url_busca = url_veiculo+"?all="+value;
     }else {
         url_busca = url_veiculo;
     }
@@ -44,7 +46,6 @@ function appendListVeiculo(data){
 /*-----------------------------(DELETAR VEICULOS) - (EVENT)-------------------------------------------------------*/
 document.addEventListener("DOMContentLoaded", function (){
     const excluir = document.querySelector('.excluir-bnt');
-    const ordem =document.querySelector('.ordem-manutencao-bnt')
 
 
     const listaVeiculo = document.getElementById('list-itens-veih'); //pega o elemento ul que contém a lista
@@ -94,6 +95,7 @@ document.addEventListener("DOMContentLoaded", function (){
 })
 
 
+
 function appendListManutencaoVeiculo(data){ // o método get envia os dados para essa função que insere no html
     const listaManuntencoes = document.getElementById("list-manutencao-veiculo") //elemento html (ul)
 
@@ -126,7 +128,6 @@ async function emitirOrdem(){
         veiculoManutencao.map(veiculo =>{
             bodyManutencao = {
                 "veiculoDTO":{"placa":veiculo.placa},
-                "funcionarioDTO":{"nome": "ADMIN"},
                 "dt_previsao":previsao,
                 "status": "EM MANUTENÇÃO"
             }
@@ -244,6 +245,7 @@ function registerVeiculo(){
 
     // console.log(body);
     post(url_veiculo, body);
+    alert("Veiculo registrado!")
 
 }
 

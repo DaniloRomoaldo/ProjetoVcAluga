@@ -2,7 +2,6 @@ url_cliente = "http://localhost:8080/cliente"
 
 
 /*-----------------------------(COLETAR CLIENTE) - (GET)-------------------------------------------------------*/
-
 function  listClients(route, value){
     event.preventDefault();
     const typeGet = "cliente";
@@ -11,10 +10,13 @@ function  listClients(route, value){
     if (route === "registro"){
         url_busca = url_cliente+"?registro="+value;
     }else if (route === "tipo"){
-        url_busca = url_cliente+"?tipo="+value;
+        url_busca = url_cliente+"?tipo="+encodeURIComponent(value);
+    }else if (route === "all"){
+        url_busca = url_cliente+"?all="+value;
     }else {
-        url_busca = url_cliente+"?nome="+value;
+        url_busca = url_cliente+"?nome="+encodeURIComponent(value);
     }
+
 
     get(typeGet,url_busca);
 }
@@ -92,6 +94,8 @@ function registerCliente(event){
             "total_fidelidade": fidelidade
         };
         post(url_cliente, body);
+
+        alert("Cliente cadastrado!")
     }
 
 

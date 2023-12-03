@@ -4,10 +4,13 @@ import com.example.projetoAluguel.domains.funcionario.Funcionario;
 import com.example.projetoAluguel.domains.funcionario.FuncionarioRepository;
 import com.example.projetoAluguel.domains.veiculo.Veiculo;
 import com.example.projetoAluguel.domains.veiculo.VeiculoRepository;
+import com.example.projetoAluguel.security.cookie.CookieService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -24,12 +27,12 @@ public class ManutencaoService {
     private FuncionarioRepository repositoryFuncionario;
 
 
-    public ManutencaoDTO criar(ManutencaoDTO manutencaoDTO){
-        Funcionario funcionario = repositoryFuncionario.findByNome(manutencaoDTO.getFuncionarioDTO().getNome()); //!!!!#pegar o codFuncionario do cookie da sessão
+    public ManutencaoDTO criar(ManutencaoDTO manutencaoDTO , HttpServletRequest request){
+        Optional<Funcionario> funcionario = repositoryFuncionario.findById(UUID.fromString(CookieService.getCookie(request, "funcionarioId"))); //!!!!#pegar o codFuncionario do cookie da sessão
         Veiculo veiculo = repositoryVeiculo.findByPlaca(manutencaoDTO.getVeiculoDTO().getPlaca()); //a tabela de veículo precisa ser refatorada, adicionar pelo menos a plcada do veículo
 
         Manutencao manutencao = new Manutencao();
-        manutencao.setFuncionario(funcionario);
+        funcionario.ifPresent(manutencao::setFuncionario);
         manutencao.setVeiculo(veiculo);
         manutencao.setDt_entrada(manutencaoDTO.getDt_entrada()); //
         manutencao.setDt_previsao(manutencaoDTO.getDt_previsao()); // Não é verboso o suficiente para utilizar objcet mapping

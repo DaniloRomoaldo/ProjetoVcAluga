@@ -7,8 +7,12 @@ function listMotorista(route, value){
 
     if (route === "CNH"){
         url_busca=url_motorista+"?cnh="+value;
+    }else if (route === "all"){
+        url_busca=url_motorista+"?all="+value
+    }else if (route === "status"){
+        url_busca=url_motorista+"?status="+value;
     }else {
-        url_busca=url_motorista+"?nome="+value;
+        url_busca=url_motorista+"?nome="+encodeURIComponent(value);
     }
     get(typeGet,url_busca);
 }

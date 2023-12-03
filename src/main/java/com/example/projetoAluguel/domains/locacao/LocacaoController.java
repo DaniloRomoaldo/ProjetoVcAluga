@@ -1,12 +1,14 @@
 package com.example.projetoAluguel.domains.locacao;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 
 @RestController
@@ -18,15 +20,15 @@ public class LocacaoController {
 
     @PostMapping
     @ResponseBody
-    public LocacaoDTO criar(@RequestBody LocacaoDTO locacaoDTO) throws JsonProcessingException {
-        return locacaoService.criar(locacaoDTO);
+    public LocacaoDTO criar(@RequestBody LocacaoDTO locacaoDTO, HttpServletRequest request) throws JsonProcessingException {
+        return locacaoService.criar(locacaoDTO , request);
     }
 
-    @PutMapping("/{codLocacao}")
+    @PutMapping("/{locacaoId}")
     @ResponseBody
-    public LocacaoDTO atualizar(@PathVariable("codLocacao")int codLocacao,
+    public LocacaoDTO atualizar(@PathVariable("locacaoId")UUID locacaoId,
                               @RequestBody LocacaoDTO locacaoDTO){
-        return locacaoService.atualizar(locacaoDTO,codLocacao);
+        return locacaoService.atualizar(locacaoDTO,locacaoId);
     }
 
 
@@ -41,10 +43,12 @@ public class LocacaoController {
 
     @GetMapping
     @ResponseBody
-    public List<LocacaoDTO> getLocacoes(@RequestParam(value = "cliente", required = false)String nomeCliente,
+    public List<LocacaoDTO> getLocacoes(@RequestParam(value = "nomeCliente", required = false)String nomeCliente,
                                         @RequestParam(value = "registroCliente", required = false)String registroCliente, // registro é um sinonimo para cpf e cnpj
                                         @RequestParam(value = "codLocacao", required = false) String codLocacao,
-                                        @RequestParam(value = "status", required = false)String status){
+                                        @RequestParam(value = "status", required = false)String status,
+                                        @RequestParam(value = "locacaoId", required = false)UUID locacaoId,
+                                        @RequestParam(value = "all", required = false)String all){
 
         if (nomeCliente != null){
             return locacaoService.getLocacaoCliente("nome", nomeCliente);
@@ -52,7 +56,11 @@ public class LocacaoController {
             return locacaoService.getLocacaoCliente("cpfCnpj", registroCliente);
         } else if (codLocacao != null) {
             return Collections.singletonList(locacaoService.getCodLocacao(Integer.parseInt(codLocacao)));
-        }else {
+        } else if (locacaoId != null) {
+            return Collections.singletonList(locacaoService.getLocacaoId(locacaoId));
+        } else if (all != null) {
+            return locacaoService.getALL();
+        } else {
            return locacaoService.getStatus(status);
         }
     }

@@ -11,8 +11,10 @@ function listFuncio(route, value){
 
     if (route === "funcao"){
         url_busca = url_funcionario+"?funcao="+value;
+    }else if (route === "all"){
+        url_busca = url_funcionario+"?all="+value;
     }else {
-        url_busca = url_funcionario+"?nome="+value;
+        url_busca = url_funcionario+"?nome="+encodeURIComponent(value);
     }
 
     get(typeGet,url_busca);
@@ -86,6 +88,8 @@ function registerFuncionario(){
     }
     console.log(body);
     post(url_funcionario, body);
+
+    alert("Funcionário cadastrado!")
 }
 
 

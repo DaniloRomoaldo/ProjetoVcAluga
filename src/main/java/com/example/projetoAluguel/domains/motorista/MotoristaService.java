@@ -110,7 +110,12 @@ public class MotoristaService {
                 .stream()
                 .map(this::converter).collect(Collectors.toList());
     }
-
+public List<MotoristaDTO> getMotoristaStatus(String status){
+        return repository
+                .findByStatus(status)
+                .stream()
+                .map(this::converter).collect(Collectors.toList());
+}
 
     public List<MotoristaDTO> getALL(){
         return repository

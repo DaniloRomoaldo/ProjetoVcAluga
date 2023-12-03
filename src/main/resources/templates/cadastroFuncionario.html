@@ -33,6 +33,7 @@
             <!--Lista do menu lateral-->
             <div class="list-group nav-list">
                 <a href="http://localhost:8080/buscarVeiculo" class="list-group-item list-group-item-action list-group-item-secondary">Localizar Veículo</a>
+                <a href="http://localhost:8080/listaManutencao" class="list-group-item list-group-item-action list-group-item-secondary">LIsta de Manutenção</a>
                 <a href="http://localhost:8080/buscarCliente" class="list-group-item list-group-item-action list-group-item-secondary">Consultar Cliente</a>
                 <a href="http://localhost:8080/buscarMotorista" class="list-group-item list-group-item-action list-group-item-secondary">Consultar Motorista</a>
                 <a href="http://localhost:8080/cadastrarMotorista" class="list-group-item list-group-item-action list-group-item-secondary">Registrar Motorista</a>
@@ -64,11 +65,16 @@
                           </div>
                         </div>
 
-                        <div class="row mb-3 list-filiais">
-                            <select class="form-select" aria-label="default select exemple" id="dropdown-filiais"> <!--dentro desse pedaço, inserir as opções-->
+                        <div class="row mb-3">
+                            <label  class="col-sm-2 col-form-label">Filial Proprietária</label>
+                            <div class="col-sm-10">
+                                <div class="row mb-3 list-filiais2">
+                                    <select class="form-select" aria-label="default select exemple" id="dropdown-filiais"> <!--dentro desse pedaço, inserir as opções-->
+                                        <option selected>Selecionar </option>
+                                    </select>
 
-                            </select>
-
+                                </div>
+                            </div>
                         </div>
 
                           <fieldset class="row mb-3 field-camp">

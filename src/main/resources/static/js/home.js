@@ -81,6 +81,9 @@ function get(typeGet,url){  // função GET padrão para todos os request de bus
                     appendListManutencaoVeiculo(data)
                 case typeGet = "veiculoDisponivel":
                     appendListVeiculosDisponiveis(data)
+                case typeGet = "finalizarLocacao":
+                    return data;
+
 
             }
 

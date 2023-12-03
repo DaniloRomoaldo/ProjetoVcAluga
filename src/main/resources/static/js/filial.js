@@ -15,6 +15,8 @@ function registerFilial(){
     };
 
     post(url_filial, body);
+
+    alert("Filial cadastrada!")
 }
 
 
