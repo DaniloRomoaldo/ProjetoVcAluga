@@ -49,6 +49,6 @@ public class LoginViewController {
             return "redirect:/home";
         }
         return "redirect:/login?error";
-}
+    }
 
 }
